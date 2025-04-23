@@ -42,7 +42,7 @@ def company_delete(request, pk):
 
 def supplier_list(request):
     suppliers = Supplier.objects.all()
-    return render(request, 'supplier_list.html', {'suppliers': suppliers})
+    return render(request, 'supplier/supplier_list.html', {'suppliers': suppliers})
 
 def supplier_create(request):
     if request.method == 'POST':
@@ -52,7 +52,7 @@ def supplier_create(request):
             return redirect('supplier_list')
     else:
         form = SupplierForm()
-    return render(request, 'supplier_form.html', {'form': form})
+    return render(request, 'supplier/supplier_form.html', {'form': form})
 
 def supplier_update(request, pk):
     supplier = get_object_or_404(Supplier, pk=pk)
@@ -63,14 +63,14 @@ def supplier_update(request, pk):
             return redirect('supplier_list')
     else:
         form = SupplierForm(instance=supplier)
-    return render(request, 'supplier_form.html', {'form': form})
+    return render(request, 'supplier/supplier_form.html', {'form': form})
 
 def supplier_delete(request, pk):
     supplier = get_object_or_404(Supplier, pk=pk)
     if request.method == 'POST':
         supplier.delete()
         return redirect('supplier_list')
-    return render(request, 'supplier_confirm_delete.html', {'supplier': supplier})
+    return render(request, 'supplier/supplier_confirm_delete.html', {'supplier': supplier})
 
 
 # MenPower Views
