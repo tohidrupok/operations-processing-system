@@ -1,6 +1,10 @@
 
-<a href="{% url 'company_create' %}" class="btn">Add New {{ title }}</a>
+{% extends 'partials/base0.html' %}
+{% block content %}
+{% load static %}
 
+
+<a href="{% url 'company_create' %}" class="btn">Add New {{ title }}</a>
 <table>
     <thead>
         <tr>
@@ -38,3 +42,6 @@
 </table>
 
 
+
+
+{% endblock %}

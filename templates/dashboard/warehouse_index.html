@@ -1,0 +1,203 @@
+{% load crispy_forms_tags %}
+<br>
+<div class="container">
+    <div class="row mt-4">
+       
+        <div class="col-12">  <br> 
+            <h4 class="heading-primary">ক্রেতার অর্ডার পরিচালনা</h4>
+            <form method="POST" class="order-form">
+                {% csrf_token %}
+
+                <!-- Shop Selection Dropdown -->
+                <div class="form-group">
+                    <label for="shop-select" class="form-label">ক্রেতা নির্বাচন করুন (অত্যাবশ্যক)</label>
+                    <select name="selected_shop" id="shop-select" class="form-control shop-select">
+                        <option value="">**এখানে ক্লিক করুন**</option>
+                        {% for shop in shops %}
+                            <option value="{{ shop.id }}" {% if selected_shop and selected_shop.id == shop.id %}selected{% endif %}>
+                                {{ shop.shop_name }} - {{ shop.shop_owner }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Management Form for Formset -->
+                {{ formset.management_form }}
+
+                <!-- Product Form Container -->
+                <div id="product-form-container" class="product-forms">
+                    {% for form in formset %}
+                        <div class="product-form card">
+                            {{ form|crispy }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-actions d-flex justify-content-between mt-4">
+                    <button type="button" id="add-product-btn" class="btn btn-primary shadow-sm">
+                        <i class="fas fa-plus"></i>পণ্য যোগ করুন
+                    </button>
+                    <button type="button" id="remove-product-btn" class="btn btn-danger shadow-sm">
+                        <i class="fas fa-minus"></i> পণ্য বাদ দিন
+                    </button>
+                </div>
+
+                <div class="mt-5 text-center">
+                    <button type="submit" class="btn btn-success btn-lg shadow">
+                        অর্ডার করুন
+                    </button>
+                </div>
+            </form>
+
+            <!-- JavaScript for Add/Remove Product Forms -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const formContainer = document.getElementById('product-form-container');
+                    const addProductBtn = document.getElementById('add-product-btn');
+                    const removeProductBtn = document.getElementById('remove-product-btn');
+                    const totalForms = document.getElementById('id_form-TOTAL_FORMS');
+                    let formNum = formContainer.getElementsByClassName('product-form').length - 1;
+
+                    // Add Product functionality
+                    addProductBtn.addEventListener('click', function() {
+                        formNum++;
+                        const newForm = formContainer.firstElementChild.cloneNode(true);
+                        const formRegex = new RegExp('form-(\\d+)', 'g');
+
+                        newForm.innerHTML = newForm.innerHTML.replace(formRegex, 'form-' + formNum);
+                        formContainer.appendChild(newForm);
+                        totalForms.value = formNum + 1;
+                    });
+
+                    // Remove Product functionality
+                    removeProductBtn.addEventListener('click', function() {
+                        if (formContainer.children.length > 1) {
+                            formContainer.lastElementChild.remove();
+                            formNum--;
+                            totalForms.value = formNum + 1;
+                        }
+                    });
+                });
+            </script>
+        </div>
+    </div>
+</div>
+<br><br>
+<style>
+    /* Main container style */
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Heading style */
+    .heading-primary {
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: bold;
+        font-size: 1.75rem;
+        color: #333;
+    }
+
+    /* Dropdown styling */
+    .shop-select {
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        transition: border-color 0.3s;
+    }
+
+    .shop-select:focus {
+        border-color: #5f77ff;
+        box-shadow: 0 0 5px rgba(95, 119, 255, 0.5);
+    }
+
+    /* Product form container */
+    .product-forms {
+        background-color: #f9fafc;
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    /* Individual product form */
+    .product-form {
+        background: #fff;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Button styles */
+    .btn {
+        border-radius: 50px;
+        font-weight: bold;
+        padding: 10px 25px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: #5f77ff;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #4c68e3;
+        transform: translateY(-2px);
+    }
+
+    .btn-danger {
+        background-color: #e74c3c;
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #c0392b;
+        transform: translateY(-2px);
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+        transform: translateY(-2px);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .container {
+            padding: 15px;
+        }
+
+        .heading-primary {
+            font-size: 1.5rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .form-actions button {
+            margin-bottom: 10px;
+        }
+
+        .product-form {
+            padding: 15px;
+        }
+    }
+</style>

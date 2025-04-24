@@ -77,7 +77,7 @@ def supplier_delete(request, pk):
 
 def menpower_list(request):
     menpowers = MenPower.objects.all()
-    return render(request, 'menpower_list.html', {'menpowers': menpowers})
+    return render(request, 'menpower/menpower_list.html', {'menpowers': menpowers})
 
 def menpower_create(request):
     if request.method == 'POST':
@@ -87,7 +87,7 @@ def menpower_create(request):
             return redirect('menpower_list')
     else:
         form = MenPowerForm()
-    return render(request, 'menpower_form.html', {'form': form})
+    return render(request, 'menpower/menpower_form.html', {'form': form})
 
 def menpower_update(request, pk):
     menpower = get_object_or_404(MenPower, pk=pk)
@@ -98,11 +98,11 @@ def menpower_update(request, pk):
             return redirect('menpower_list')
     else:
         form = MenPowerForm(instance=menpower)
-    return render(request, 'menpower_form.html', {'form': form})
+    return render(request, 'menpower/menpower_form.html', {'form': form})
 
 def menpower_delete(request, pk):
     menpower = get_object_or_404(MenPower, pk=pk)
     if request.method == 'POST':
         menpower.delete()
         return redirect('menpower_list')
-    return render(request, 'menpower_confirm_delete.html', {'menpower': menpower})
+    return render(request, 'menpower/menpower_confirm_delete.html', {'menpower': menpower})
