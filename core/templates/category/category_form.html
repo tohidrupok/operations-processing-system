@@ -1,0 +1,25 @@
+{% extends 'partials/base0.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container my-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h2 class="mb-4">{{ title|default:"Create / Update Category" }}</h2>
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.as_p }}
+                </div>
+
+                <div class="d-flex justify-content-start mt-4">
+                    <button type="submit" class="btn btn-success me-3">💾 Save</button>
+                    <a href="{% url 'category_list' %}" class="btn btn-secondary">↩️ Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

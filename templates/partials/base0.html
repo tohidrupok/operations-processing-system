@@ -75,7 +75,7 @@
 					<a href="javascript:;" class="has-arrow">
 						<div class="parent-icon"><i class="bx bx-category"></i>
 						</div>
-						<div class="menu-title">Application</div>
+						<div class="menu-title">Project</div>
 					</a>
 					<ul>
 						<li> <a href="app-emailbox.html"><i class="bx bx-right-arrow-alt"></i>Email</a>
@@ -156,18 +156,20 @@
 					<a class="has-arrow" href="javascript:;">
 						<div class="parent-icon"> <i class="bx bx-donate-blood"></i>
 						</div>
-						<div class="menu-title">Icons</div>
+						<div class="menu-title">Items</div>
 					</a>
 					<ul>
-						<li> <a href="icons-line-icons.html"><i class="bx bx-right-arrow-alt"></i>Line Icons</a>
+						<li> <a href="{% url 'item_list' %}"><i class="bx bx-right-arrow-alt"></i>Items List</a>
 						</li>
-						<li> <a href="icons-boxicons.html"><i class="bx bx-right-arrow-alt"></i>Boxicons</a>
+						<li> <a href="{% url 'item_create' %}"><i class="bx bx-right-arrow-alt"></i>Add New Items</a>
 						</li>
-						<li> <a href="icons-feather-icons.html"><i class="bx bx-right-arrow-alt"></i>Feather Icons</a>
+						<li> <a href="{% url 'category_list' %}"><i class="bx bx-right-arrow-alt"></i>Category List</a>
+						</li>
+						<li> <a href="{% url 'category_create' %}"><i class="bx bx-right-arrow-alt"></i>Add New Category</a>
 						</li>
 					</ul>
 				</li>
-				<li class="menu-label">Forms & Tables</li>
+				<li class="menu-label">Bank & Accounting</li>
 				<li>
 					<a class="has-arrow" href="javascript:;">
 						<div class="parent-icon"><i class='bx bx-message-square-edit'></i>

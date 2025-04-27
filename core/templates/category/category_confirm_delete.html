@@ -1,0 +1,21 @@
+{% extends 'partials/base0.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container my-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-body text-center">
+            <h2 class="text-danger mb-4">⚠️ Confirm Deletion</h2>
+            <p class="fs-5">Are you sure you want to delete <strong>"{{ category.name }}"</strong>?</p>
+
+            <form method="post" class="d-inline-block">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger me-2">🗑️ Confirm Delete</button>
+            </form>
+
+            <a href="{% url 'category_list' %}" class="btn btn-secondary">↩️ Cancel</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

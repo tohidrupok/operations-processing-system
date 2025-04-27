@@ -19,5 +19,17 @@ urlpatterns = [
     path('menpowers/add/', views.menpower_create, name='menpower_create'),
     path('menpowers/<int:pk>/edit/', views.menpower_update, name='menpower_update'),
     path('menpowers/<int:pk>/delete/', views.menpower_delete, name='menpower_delete'),
+    
+    # Category URLs
+    path('categories/', views.category_list, name='category_list'),
+    path('categories/create/', views.category_create, name='category_create'),
+    path('categories/<int:pk>/edit/', views.category_update, name='category_update'),
+    path('categories/<int:pk>/delete/', views.category_delete, name='category_delete'),
+
+    # Item URLs
+    path('items/', views.item_list, name='item_list'),
+    path('items/create/', views.item_create, name='item_create'),
+    path('items/<int:pk>/edit/', views.item_update, name='item_update'),
+    path('items/<int:pk>/delete/', views.item_delete, name='item_delete'),
 ]
 
