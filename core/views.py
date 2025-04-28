@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Company, Supplier, MenPower, Category, Item
-from .forms import CompanyForm, SupplierForm, MenPowerForm, CategoryForm, ItemForm
+from .models import Company, Supplier, MenPower, Category, Item, Project, Memo, ManpowerMemo
+from .forms import CompanyForm, SupplierForm, MenPowerForm, CategoryForm, ItemForm,ProjectForm, MemoForm, ManpowerMemoForm
 
 
 # Company Views
@@ -182,3 +182,107 @@ def item_delete(request, pk):
         item.delete()
         return redirect('item_list')
     return render(request, 'item/item_confirm_delete.html', {'item': item}) 
+
+
+
+
+# PROJECT CRUD
+def project_list(request):
+    projects = Project.objects.all()
+    return render(request, 'project/project_list.html', {'projects': projects})
+
+def project_create(request):
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('project_list')
+    else:
+        form = ProjectForm()
+    return render(request, 'project/project_form.html', {'form': form})
+
+def project_update(request, pk):
+    project = get_object_or_404(Project, pk=pk)
+    if request.method == 'POST':
+        form = ProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            form.save()
+            return redirect('project_list')
+    else:
+        form = ProjectForm(instance=project)
+    return render(request, 'project/project_form.html', {'form': form})
+
+def project_delete(request, pk):
+    project = get_object_or_404(Project, pk=pk)
+    if request.method == 'POST':
+        project.delete()
+        return redirect('project_list')
+    return render(request, 'project/project_confirm_delete.html', {'project': project})
+
+
+# MEMO CRUD
+def memo_list(request):
+    memos = Memo.objects.all()
+    return render(request, 'memo/memo_list.html', {'memos': memos})
+
+def memo_create(request):
+    if request.method == 'POST':
+        form = MemoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('memo_list')
+    else:
+        form = MemoForm()
+    return render(request, 'memo/memo_form.html', {'form': form})
+
+def memo_update(request, pk):
+    memo = get_object_or_404(Memo, pk=pk)
+    if request.method == 'POST':
+        form = MemoForm(request.POST, instance=memo)
+        if form.is_valid():
+            form.save()
+            return redirect('memo_list')
+    else:
+        form = MemoForm(instance=memo)
+    return render(request, 'memo/memo_form.html', {'form': form})
+
+def memo_delete(request, pk):
+    memo = get_object_or_404(Memo, pk=pk)
+    if request.method == 'POST':
+        memo.delete()
+        return redirect('memo_list')
+    return render(request, 'memo/memo_confirm_delete.html', {'memo': memo})
+
+
+# MANPOWER MEMO CRUD
+def manpowermemo_list(request):
+    manpower_memos = ManpowerMemo.objects.all()
+    return render(request, 'hiring/manpowermemo_list.html', {'manpower_memos': manpower_memos})
+
+def manpowermemo_create(request):
+    if request.method == 'POST':
+        form = ManpowerMemoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('manpowermemo_list')
+    else:
+        form = ManpowerMemoForm()
+    return render(request, 'hiring/manpowermemo_form.html', {'form': form})
+
+def manpowermemo_update(request, pk):
+    manpower_memo = get_object_or_404(ManpowerMemo, pk=pk)
+    if request.method == 'POST':
+        form = ManpowerMemoForm(request.POST, instance=manpower_memo)
+        if form.is_valid():
+            form.save()
+            return redirect('manpowermemo_list')
+    else:
+        form = ManpowerMemoForm(instance=manpower_memo)
+    return render(request, 'hiring/manpowermemo_form.html', {'form': form})
+
+def manpowermemo_delete(request, pk):
+    manpower_memo = get_object_or_404(ManpowerMemo, pk=pk)
+    if request.method == 'POST':
+        manpower_memo.delete()
+        return redirect('manpowermemo_list')
+    return render(request, 'hiring/manpowermemo_confirm_delete.html', {'manpower_memo': manpower_memo})

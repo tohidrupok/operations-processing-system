@@ -1,0 +1,7 @@
+<h1>{{ form.instance.pk|yesno:"Update Manpower Memo,Create Manpower Memo" }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">💾 Save</button>
+    <a href="{% url 'manpowermemo_list' %}">🔙 Back to Manpower Memos</a>
+</form>

@@ -30,6 +30,26 @@ urlpatterns = [
     path('items/', views.item_list, name='item_list'),
     path('items/create/', views.item_create, name='item_create'),
     path('items/<int:pk>/edit/', views.item_update, name='item_update'),
-    path('items/<int:pk>/delete/', views.item_delete, name='item_delete'),
+    path('items/<int:pk>/delete/', views.item_delete, name='item_delete'), 
+    
+    
+    # Project
+    path('projects/', views.project_list, name='project_list'),
+    path('projects/create/', views.project_create, name='project_create'),
+    path('projects/update/<int:pk>/', views.project_update, name='project_update'),
+    path('projects/delete/<int:pk>/', views.project_delete, name='project_delete'),
+
+    # Memo
+    path('memos/', views.memo_list, name='memo_list'),
+    path('memos/create/', views.memo_create, name='memo_create'),
+    path('memos/update/<int:pk>/', views.memo_update, name='memo_update'),
+    path('memos/delete/<int:pk>/', views.memo_delete, name='memo_delete'),
+
+    # ManpowerMemo
+    path('manpower-memos/', views.manpowermemo_list, name='manpowermemo_list'),
+    path('manpower-memos/create/', views.manpowermemo_create, name='manpowermemo_create'),
+    path('manpower-memos/update/<int:pk>/', views.manpowermemo_update, name='manpowermemo_update'),
+    path('manpower-memos/delete/<int:pk>/', views.manpowermemo_delete, name='manpowermemo_delete'),
+
 ]
 

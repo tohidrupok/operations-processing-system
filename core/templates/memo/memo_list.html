@@ -1,0 +1,13 @@
+<h1>Item Memos</h1>
+<a href="{% url 'memo_create' %}">➕ Create New Memo</a>
+<ul>
+    {% for memo in memos %}
+        <li>
+            Memo for project: {{ memo.project.name }} | Supplier: {{ memo.supplier.name }} | Amount: {{ memo.amount }}
+            <a href="{% url 'memo_update' memo.pk %}">✏️ Edit</a>
+            <a href="{% url 'memo_delete' memo.pk %}">🗑️ Delete</a>
+        </li>
+    {% empty %}
+        <li>No memos yet.</li>
+    {% endfor %}
+</ul>

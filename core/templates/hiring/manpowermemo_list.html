@@ -1,0 +1,13 @@
+<h1>Manpower Payment Memos</h1>
+<a href="{% url 'manpowermemo_create' %}">➕ Create New Manpower Memo</a>
+<ul>
+    {% for manpower_memo in manpower_memos %}
+        <li>
+            Project: {{ manpower_memo.project.name }} | Worker: {{ manpower_memo.worker.name }} | Amount: {{ manpower_memo.amount }}
+            <a href="{% url 'manpowermemo_update' manpower_memo.pk %}">✏️ Edit</a>
+            <a href="{% url 'manpowermemo_delete' manpower_memo.pk %}">🗑️ Delete</a>
+        </li>
+    {% empty %}
+        <li>No manpower memos yet.</li>
+    {% endfor %}
+</ul>

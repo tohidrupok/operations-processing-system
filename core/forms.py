@@ -1,5 +1,5 @@
 from django import forms
-from .models import Company, Supplier, MenPower, Category, Item
+from .models import Company, Supplier, MenPower, Category, Item, Project, Memo, ManpowerMemo
 
 class CompanyForm(forms.ModelForm):
     class Meta:
@@ -26,3 +26,18 @@ class ItemForm(forms.ModelForm):
         model = Item
         fields = ['item_name', 'image', 'category'] 
         
+        
+class ProjectForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = '__all__'
+
+class MemoForm(forms.ModelForm):
+    class Meta:
+        model = Memo
+        fields = '__all__'
+
+class ManpowerMemoForm(forms.ModelForm):
+    class Meta:
+        model = ManpowerMemo
+        fields = '__all__'
