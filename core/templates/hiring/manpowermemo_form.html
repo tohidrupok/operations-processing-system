@@ -1,7 +1,33 @@
-<h1>{{ form.instance.pk|yesno:"Update Manpower Memo,Create Manpower Memo" }}</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">💾 Save</button>
-    <a href="{% url 'manpowermemo_list' %}">🔙 Back to Manpower Memos</a>
-</form>
+{% extends 'partials/base0.html' %}
+{% block content %}
+{% load static %}
+
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-dark fw-bold">
+            {{ form.instance.pk|yesno:"Update Manpower Memo,Create Manpower Memo" }}
+        </h1>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="card shadow-sm p-4">
+            <div class="card-body">
+                <div class="mb-3">
+                    {{ form.as_p }}
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">
+                        💾 Save
+                    </button>
+                    <a href="{% url 'manpowermemo_list' %}" class="btn btn-outline-secondary">
+                        🔙 Back to Memos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

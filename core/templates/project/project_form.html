@@ -1,7 +1,32 @@
-<h1>{{ form.instance.pk|yesno:"Update Project,Create Project" }}</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">💾 Save</button>
-    <a href="{% url 'project_list' %}">🔙 Back to Projects</a>
-</form>
+{% extends 'partials/base0.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container my-5">
+    <div class="card shadow-sm border-0 rounded">
+        <div class="card-header bg-primary text-white text-center">
+            <h2>{{ form.instance.pk|yesno:"✏️ Update Project,➕ Create Project" }}</h2>
+        </div>
+
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    {{ form.as_p }}
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">
+                        💾 Save Project
+                    </button>
+                    <a href="{% url 'project_list' %}" class="btn btn-secondary">
+                        🔙 Back to Projects
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

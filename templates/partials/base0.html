@@ -78,17 +78,17 @@
 						<div class="menu-title">Project</div>
 					</a>
 					<ul>
-						<li> <a href="app-emailbox.html"><i class="bx bx-right-arrow-alt"></i>Project List</a>
+						<li> <a href="{% url 'project_list' %}"><i class="bx bx-right-arrow-alt"></i>Project List</a>
 						</li>
-						<li> <a href="app-chat-box.html"><i class="bx bx-right-arrow-alt"></i>Add New Project</a>
+						<li> <a href="{% url 'project_create' %}"><i class="bx bx-right-arrow-alt"></i>Add New Project</a>
 						</li>
-						<li> <a href="app-file-manager.html"><i class="bx bx-right-arrow-alt"></i>Memo List</a>
+						<li> <a href="{% url 'memo_list' %}"><i class="bx bx-right-arrow-alt"></i>Memo List</a>
 						</li>
-						<li> <a href="app-contact-list.html"><i class="bx bx-right-arrow-alt"></i>Add New Memo</a>
+						<li> <a href="{% url 'memo_create' %}"><i class="bx bx-right-arrow-alt"></i>Add New Memo</a>
 						</li>
-						<li> <a href="app-to-do.html"><i class="bx bx-right-arrow-alt"></i>Hiring Memo</a>
+						<li> <a href="{% url 'manpowermemo_list' %}"><i class="bx bx-right-arrow-alt"></i>Hiring Memo</a>
 						</li>
-						<li> <a href="app-invoice.html"><i class="bx bx-right-arrow-alt"></i>Add New Hiring Memo</a>
+						<li> <a href="{% url 'manpowermemo_create' %}"><i class="bx bx-right-arrow-alt"></i>Add New Hiring Memo</a>
 						</li>
 					</ul>
 				</li>
