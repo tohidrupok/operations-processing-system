@@ -2,13 +2,20 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Company, Supplier, MenPower, Category, Item, Project, Memo, ManpowerMemo
 from .forms import CompanyForm, SupplierForm, MenPowerForm, CategoryForm, ItemForm,ProjectForm, MemoForm, ManpowerMemoForm
 
+from django.contrib.auth.decorators import user_passes_test
+
+def staff_required(view_func):
+    return user_passes_test(lambda u: u.is_authenticated and u.is_staff)(view_func) 
+
+
 
 # Company Views
-
+@staff_required
 def company_list(request):
     companies = Company.objects.all()
     return render(request, 'companie/company_list.html', {'companies': companies})
 
+@staff_required
 def company_create(request):
     if request.method == 'POST':
         form = CompanyForm(request.POST, request.FILES)
@@ -19,6 +26,8 @@ def company_create(request):
         form = CompanyForm()
     return render(request, 'companie/company_form.html', {'form': form})
 
+
+@staff_required
 def company_update(request, pk):
     company = get_object_or_404(Company, pk=pk)
     if request.method == 'POST':
@@ -30,6 +39,8 @@ def company_update(request, pk):
         form = CompanyForm(instance=company)
     return render(request, 'companie/company_form.html', {'form': form})
 
+
+@staff_required
 def company_delete(request, pk):
     company = get_object_or_404(Company, pk=pk)
     if request.method == 'POST':
@@ -40,10 +51,14 @@ def company_delete(request, pk):
 
 # Supplier Views
 
+
+@staff_required
 def supplier_list(request):
     suppliers = Supplier.objects.all()
     return render(request, 'supplier/supplier_list.html', {'suppliers': suppliers})
 
+
+@staff_required
 def supplier_create(request):
     if request.method == 'POST':
         form = SupplierForm(request.POST, request.FILES)
@@ -54,6 +69,8 @@ def supplier_create(request):
         form = SupplierForm()
     return render(request, 'supplier/supplier_form.html', {'form': form})
 
+
+@staff_required
 def supplier_update(request, pk):
     supplier = get_object_or_404(Supplier, pk=pk)
     if request.method == 'POST':
@@ -65,6 +82,8 @@ def supplier_update(request, pk):
         form = SupplierForm(instance=supplier)
     return render(request, 'supplier/supplier_form.html', {'form': form})
 
+
+@staff_required
 def supplier_delete(request, pk):
     supplier = get_object_or_404(Supplier, pk=pk)
     if request.method == 'POST':
@@ -74,11 +93,13 @@ def supplier_delete(request, pk):
 
 
 # MenPower Views
-
+@staff_required
 def menpower_list(request):
     menpowers = MenPower.objects.all()
     return render(request, 'menpower/menpower_list.html', {'menpowers': menpowers})
 
+
+@staff_required
 def menpower_create(request):
     if request.method == 'POST':
         form = MenPowerForm(request.POST, request.FILES)
@@ -89,6 +110,7 @@ def menpower_create(request):
         form = MenPowerForm()
     return render(request, 'menpower/menpower_form.html', {'form': form})
 
+@staff_required
 def menpower_update(request, pk):
     menpower = get_object_or_404(MenPower, pk=pk)
     if request.method == 'POST':
@@ -100,6 +122,8 @@ def menpower_update(request, pk):
         form = MenPowerForm(instance=menpower)
     return render(request, 'menpower/menpower_form.html', {'form': form})
 
+
+@staff_required
 def menpower_delete(request, pk):
     menpower = get_object_or_404(MenPower, pk=pk)
     if request.method == 'POST':
@@ -111,11 +135,13 @@ def menpower_delete(request, pk):
 
 
 # Category List
+@staff_required
 def category_list(request):
     categories = Category.objects.all()
     return render(request, 'category/category_list.html', {'categories': categories})
 
 # Category Create
+@staff_required
 def category_create(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
@@ -127,6 +153,7 @@ def category_create(request):
     return render(request, 'category/category_form.html', {'form': form})
 
 # Category Update
+@staff_required
 def category_update(request, pk):
     category = get_object_or_404(Category, pk=pk)
     if request.method == 'POST':
@@ -139,6 +166,7 @@ def category_update(request, pk):
     return render(request, 'category/category_form.html', {'form': form})
 
 # Category Delete
+@staff_required
 def category_delete(request, pk):
     category = get_object_or_404(Category, pk=pk)
     if request.method == 'POST':
@@ -148,11 +176,13 @@ def category_delete(request, pk):
 
 
 # Item List
+@staff_required
 def item_list(request):
     items = Item.objects.all()
     return render(request, 'item/item_list.html', {'items': items})
 
 # Item Create
+@staff_required
 def item_create(request):
     if request.method == 'POST':
         form = ItemForm(request.POST, request.FILES)
@@ -164,6 +194,7 @@ def item_create(request):
     return render(request, 'item/item_form.html', {'form': form})
 
 # Item Update
+@staff_required
 def item_update(request, pk):
     item = get_object_or_404(Item, pk=pk)
     if request.method == 'POST':
@@ -176,6 +207,7 @@ def item_update(request, pk):
     return render(request, 'item/item_form.html', {'form': form})
 
 # Item Delete
+@staff_required
 def item_delete(request, pk):
     item = get_object_or_404(Item, pk=pk)
     if request.method == 'POST':
@@ -187,10 +219,13 @@ def item_delete(request, pk):
 
 
 # PROJECT CRUD
+@staff_required
 def project_list(request):
     projects = Project.objects.all()
     return render(request, 'project/project_list.html', {'projects': projects})
 
+
+@staff_required
 def project_create(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST)
@@ -201,6 +236,8 @@ def project_create(request):
         form = ProjectForm()
     return render(request, 'project/project_form.html', {'form': form})
 
+
+@staff_required
 def project_update(request, pk):
     project = get_object_or_404(Project, pk=pk)
     if request.method == 'POST':
@@ -212,6 +249,8 @@ def project_update(request, pk):
         form = ProjectForm(instance=project)
     return render(request, 'project/project_form.html', {'form': form})
 
+
+@staff_required
 def project_delete(request, pk):
     project = get_object_or_404(Project, pk=pk)
     if request.method == 'POST':
@@ -221,10 +260,14 @@ def project_delete(request, pk):
 
 
 # MEMO CRUD
+
+@staff_required
 def memo_list(request):
     memos = Memo.objects.all()
     return render(request, 'memo/memo_list.html', {'memos': memos})
 
+
+@staff_required
 def memo_create(request):
     if request.method == 'POST':
         form = MemoForm(request.POST)
@@ -235,6 +278,8 @@ def memo_create(request):
         form = MemoForm()
     return render(request, 'memo/memo_form.html', {'form': form})
 
+
+@staff_required
 def memo_update(request, pk):
     memo = get_object_or_404(Memo, pk=pk)
     if request.method == 'POST':
@@ -246,6 +291,8 @@ def memo_update(request, pk):
         form = MemoForm(instance=memo)
     return render(request, 'memo/memo_form.html', {'form': form})
 
+
+@staff_required
 def memo_delete(request, pk):
     memo = get_object_or_404(Memo, pk=pk)
     if request.method == 'POST':
@@ -255,10 +302,13 @@ def memo_delete(request, pk):
 
 
 # MANPOWER MEMO CRUD
+@staff_required
 def manpowermemo_list(request):
     manpower_memos = ManpowerMemo.objects.all()
     return render(request, 'hiring/manpowermemo_list.html', {'manpower_memos': manpower_memos})
 
+
+@staff_required
 def manpowermemo_create(request):
     if request.method == 'POST':
         form = ManpowerMemoForm(request.POST)
@@ -269,6 +319,7 @@ def manpowermemo_create(request):
         form = ManpowerMemoForm()
     return render(request, 'hiring/manpowermemo_form.html', {'form': form})
 
+@staff_required
 def manpowermemo_update(request, pk):
     manpower_memo = get_object_or_404(ManpowerMemo, pk=pk)
     if request.method == 'POST':
@@ -280,6 +331,8 @@ def manpowermemo_update(request, pk):
         form = ManpowerMemoForm(instance=manpower_memo)
     return render(request, 'hiring/manpowermemo_form.html', {'form': form})
 
+
+@staff_required
 def manpowermemo_delete(request, pk):
     manpower_memo = get_object_or_404(ManpowerMemo, pk=pk)
     if request.method == 'POST':

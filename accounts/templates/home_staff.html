@@ -1,0 +1,8 @@
+{% extends 'partials/base0.html' %}
+{% block content %}
+    <p>Welcome to JR, Staff Member {{ user.username }}!</p>
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+{% endblock %}

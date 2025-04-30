@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
 
 def register_view(request):
@@ -11,4 +12,15 @@ def register_view(request):
             return redirect('home')
     else:
         form = CustomUserCreationForm()
-    return render(request, "registration/register.html", {"form": form})
+    return render(request, "registration/register.html", {"form": form}) 
+
+
+@login_required
+def home_view(request):
+
+    if request.user.is_staff:
+        return render(request, 'home_staff.html')  
+    else:   
+        return render(request, 'home.html')    
+    
+    

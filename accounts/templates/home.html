@@ -1,13 +1,11 @@
-<!-- templates/home.html -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Home</title>
 </head>
 <body>
-    <h2>Welcome, {{ user.username }}!</h2>
-
     {% if user.is_authenticated %}
+        <p>We are Not Approved for access, {{ user.username }}!</p>
         <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
             <button type="submit">Logout</button>
