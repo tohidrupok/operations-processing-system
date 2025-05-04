@@ -272,7 +272,20 @@ def memo_create(request):
     if request.method == 'POST':
         form = MemoForm(request.POST)
         if form.is_valid():
-            form.save()
+            memo = form.save(commit=False)
+            project = memo.project
+            
+            # Ensure current_cost is not None
+            if project.current_cost is None:
+                project.current_cost = 0
+
+            # Add memo amount to project's current cost
+            project.current_cost += memo.amount
+            project.save()
+
+            memo.save()
+            form.save_m2m()  # For ManyToMany field 'items'
+
             return redirect('memo_list')
     else:
         form = MemoForm()
@@ -313,7 +326,18 @@ def manpowermemo_create(request):
     if request.method == 'POST':
         form = ManpowerMemoForm(request.POST)
         if form.is_valid():
-            form.save()
+            manpower_memo = form.save(commit=False)
+            project = manpower_memo.project
+
+            # Ensure current_cost is not None
+            if project.current_cost is None:
+                project.current_cost = 0
+
+            # Add the manpower memo amount to current cost
+            project.current_cost += manpower_memo.amount
+            project.save()
+
+            manpower_memo.save()
             return redirect('manpowermemo_list')
     else:
         form = ManpowerMemoForm()
