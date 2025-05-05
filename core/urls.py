@@ -38,18 +38,29 @@ urlpatterns = [
     path('projects/create/', views.project_create, name='project_create'),
     path('projects/update/<int:pk>/', views.project_update, name='project_update'),
     path('projects/delete/<int:pk>/', views.project_delete, name='project_delete'),
+    path('project/<int:project_id>/records/', views.project_record_detail, name='project_record_detail'),
+
 
     # Memo
     path('memos/', views.memo_list, name='memo_list'),
     path('memos/create/', views.memo_create, name='memo_create'),
     path('memos/update/<int:pk>/', views.memo_update, name='memo_update'),
     path('memos/delete/<int:pk>/', views.memo_delete, name='memo_delete'),
+    path('memo/<int:pk>/', views.memo_detail, name='memo_detail'),
+
 
     # ManpowerMemo
     path('manpower-memos/', views.manpowermemo_list, name='manpowermemo_list'),
     path('manpower-memos/create/', views.manpowermemo_create, name='manpowermemo_create'),
     path('manpower-memos/update/<int:pk>/', views.manpowermemo_update, name='manpowermemo_update'),
     path('manpower-memos/delete/<int:pk>/', views.manpowermemo_delete, name='manpowermemo_delete'),
+    path('manpowermemo/<int:pk>/', views.manpowermemo_detail, name='manpowermemo_detail'),
+    
+    
+    path('bank/list/', views.bank_list, name='bank_list'),
+    path('bank/create/', views.bank_create, name='bank_create'),
+    path('bank/edit/<int:pk>/', views.bank_update, name='bank_update'),
+    path('bank/delete/<int:pk>/', views.bank_delete, name='bank_delete'),
 
 ]
 

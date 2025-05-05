@@ -1,0 +1,27 @@
+{% extends 'partials/base0.html' %}
+{% block content %}
+<h2>Manpower Memo Details</h2>
+<table class="table">
+    <tr>
+        <th>Project:</th>
+        <td>{{ manpower_memo.project.name }}</td>
+    </tr>
+    <tr>
+        <th>Worker:</th>
+        <td>{{ manpower_memo.worker.name }}</td>
+    </tr>
+    <tr>
+        <th>Amount:</th>
+        <td>{{ manpower_memo.amount }} Tk</td>
+    </tr>
+    <tr>
+        <th>Payment Balance:</th>
+        <td>{{ manpower_memo.payment_balance }}</td>
+    </tr>
+    <tr>
+        <th>Created At:</th>
+        <td>{{ manpower_memo.created_at|date:"Y-m-d H:i" }}</td>
+    </tr>
+</table>
+<a href="{% url 'manpowermemo_list' %}" class="btn btn-secondary">Back to Manpower Memo List</a>
+{% endblock %}

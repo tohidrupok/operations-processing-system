@@ -1,0 +1,33 @@
+{% extends 'partials/base0.html' %}
+{% block content %}
+<h2>Memo Details</h2>
+<table class="table">
+    <tr>
+        <th>Project:</th>
+        <td>{{ memo.project.name }}</td>
+    </tr>
+    <tr>
+        <th>Supplier:</th>
+        <td>{{ memo.supplier.name }}</td>
+    </tr>
+    <tr>
+        <th>Amount:</th>
+        <td>{{ memo.amount }} Tk</td>
+    </tr>
+    <tr>
+        <th>Items:</th>
+        <td>
+            <ul>
+                {% for item in memo.items.all %}
+                    <li>{{ item.item_name }}</li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <th>Created At:</th>
+        <td>{{ memo.created_at|date:"Y-m-d H:i" }}</td>
+    </tr>
+</table>
+<a href="{% url 'memo_list' %}" class="btn btn-secondary">Back to Memo List</a>
+{% endblock %}

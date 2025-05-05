@@ -166,35 +166,35 @@
 						<li> <a href="{% url 'category_create' %}"><i class="bx bx-right-arrow-alt"></i>Add New Category</a>
 						</li>
 					</ul>
-				</li>
+				</li> 
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class="bx bx-grid-alt"></i>
+						</div>
+						<div class="menu-title">Bank</div>
+					</a>
+					<ul>
+						<li> <a href="{% url 'bank_list' %}"><i class="bx bx-right-arrow-alt"></i>Bank List</a>
+						</li>
+						<li> <a href="{% url 'bank_create' %}"><i class="bx bx-right-arrow-alt"></i>Bank Account Add</a>
+						</li>
+					</ul>
+				</li> 
+
 				<li class="menu-label">Financial Report</li>
 				<li>
 					<a class="has-arrow" href="javascript:;">
 						<div class="parent-icon"><i class='bx bx-message-square-edit'></i>
 						</div>
-						<div class="menu-title">Forms</div>
+						<div class="menu-title">Transaction </div>
 					</a>
 					<ul>
-						<li> <a href="form-elements.html"><i class="bx bx-right-arrow-alt"></i>Form Elements</a>
-						</li>
-						<li> <a href="form-input-group.html"><i class="bx bx-right-arrow-alt"></i>Input Groups</a>
-						</li>
-						<li> <a href="form-layouts.html"><i class="bx bx-right-arrow-alt"></i>Forms Layouts</a>
-						</li>
-						<li> <a href="form-validations.html"><i class="bx bx-right-arrow-alt"></i>Form Validation</a>
-						</li>
-						<li> <a href="form-wizard.html"><i class="bx bx-right-arrow-alt"></i>Form Wizard</a>
-						</li>
-						<li> <a href="form-text-editor.html"><i class="bx bx-right-arrow-alt"></i>Text Editor</a>
-						</li>
-						<li> <a href="form-file-upload.html"><i class="bx bx-right-arrow-alt"></i>File Upload</a>
-						</li>
-						<li> <a href="form-date-time-pickes.html"><i class="bx bx-right-arrow-alt"></i>Date Pickers</a>
-						</li>
-						<li> <a href="form-select2.html"><i class="bx bx-right-arrow-alt"></i>Select2</a>
-						</li>
+						<li> <a href="form-elements.html"><i class="bx bx-right-arrow-alt"></i>Received from client</a></li>
+						<li> <a href="form-input-group.html"><i class="bx bx-right-arrow-alt"></i>Sent to supplier/shop</a></li>
+						<li> <a href="form-layouts.html"><i class="bx bx-right-arrow-alt"></i>Paid to worker</a></li>
 					</ul>
-				</li>
+				</li> 
+
 				{% comment %} <li>
 					<a class="has-arrow" href="javascript:;">
 						<div class="parent-icon"><i class="bx bx-grid-alt"></i>
@@ -680,19 +680,18 @@
 						<ul class="dropdown-menu dropdown-menu-end">
 							<li><a class="dropdown-item" href="javascript:;"><i class="bx bx-user"></i><span>Profile</span></a>
 							</li>
-							<li><a class="dropdown-item" href="javascript:;"><i class="bx bx-cog"></i><span>Settings</span></a>
-							</li>
-							<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-home-circle'></i><span>Dashboard</span></a>
-							</li>
-							<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-dollar-circle'></i><span>Earnings</span></a>
-							</li>
-							<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-download'></i><span>Downloads</span></a>
-							</li>
 							<li>
 								<div class="dropdown-divider mb-0"></div>
 							</li>
-							<li><a class="dropdown-item" href="javascript:;"><i class='bx bx-log-out-circle'></i><span>Logout</span></a>
-							</li>
+                            <li>
+								<form action="{% url 'logout' %}" method="post">
+									{% csrf_token %}
+									<button type="submit">Logout</button>
+								</form> 
+						    </li>
+
+							
+							
 						</ul>
 					</div>
 				</nav>

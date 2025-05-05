@@ -1,0 +1,76 @@
+{% extends 'partials/base0.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container my-4">
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Project Details</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>Name:</strong> {{ project.name }}</p>
+            <p><strong>Company:</strong> {{ project.company.name }}</p>
+            <p><strong>Location:</strong> {{ project.location }}</p>
+            <p><strong>Approximate Bill:</strong> {{ project.approximate_bill|default:"0" }} Tk</p>
+            <p><strong>Current Cost:</strong> {{ project.current_cost|default:"0" }} Tk</p>
+            <p><strong>Final Bill:</strong> {{ project.final_bill|default:"-" }}</p>
+            <p><strong>Current Paid:</strong> {{ project.current_paid|default:"0" }} Tk</p>
+            <p><strong>Status:</strong> 
+                <span class="badge 
+                    {% if project.status == 'completed' %}
+                        bg-success
+                    {% elif project.status == 'ongoing' %}
+                        bg-warning text-dark
+                    {% else %}
+                        bg-secondary
+                    {% endif %}
+                ">
+                    {{ project.status|capfirst }}
+                </span>
+            </p>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">All Related Records</h5>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Memo Type</th>
+                        <th scope="col">Note</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ record.amount }} Tk</td>
+                            <td>
+                                {% if record.memo %}
+                                    <a href="{% url 'memo_detail' record.memo.pk %}" class="btn btn-sm btn-outline-primary">Memo</a>
+                                {% endif %}
+                                {% if record.manpower %}
+                                    <a href="{% url 'manpowermemo_detail' record.manpower.pk %}" class="btn btn-sm btn-outline-info">Manpower</a>
+                                {% endif %}
+                            </td>
+                            <td>{{ record.note|default:"—" }}</td>
+                            <td>{{ record.created_at|date:"Y-m-d H:i" }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">No records found for this project.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

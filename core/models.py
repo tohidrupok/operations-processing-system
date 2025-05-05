@@ -47,15 +47,22 @@ class Item(models.Model):
 
 #Project Model
 class Project(models.Model):
+    STATUS_CHOICES = [
+        ('RUNNING', 'Running'),
+        ('TRIAL', 'Trial Period'),
+        ('CLOSED', 'Closed'),
+        ('OTHER', 'Other'),
+    ]
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='projects')
     name = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
-    approximate_bill = models.DecimalField(max_digits=12, decimal_places=2)
-    current_cost = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
-    final_bill = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
-    current_paid = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    approximate_bill = models.PositiveIntegerField(default=0)
+    current_cost = models.PositiveIntegerField(default=0, null=True, blank=True)
+    final_bill = models.PositiveIntegerField(default=0, null=True, blank=True)
+    current_paid = models.PositiveIntegerField(default=0, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=10, null=True, blank=True, choices=STATUS_CHOICES, default='RUNNING')
 
     def __str__(self):
         return f"{self.name} ({self.company.name})"
@@ -66,7 +73,7 @@ class Memo(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='item_memos')
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name='memos')
     items = models.ManyToManyField(Item, related_name='memos')
-    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    amount = models.PositiveIntegerField(default=0)
     payment_balance = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -79,10 +86,74 @@ class Memo(models.Model):
 class ManpowerMemo(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='manpower_memos')
     worker = models.ForeignKey(MenPower, on_delete=models.CASCADE, related_name='memos')
-    amount = models.DecimalField(max_digits=12, decimal_places=2)
-    payment_balance = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    amount = models.PositiveIntegerField(default=0)
+    payment_balance = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Manpower Memo - {self.project.name}"
+
+
+
+class Bank(models.Model):
+    ACCOUNT_TYPES = [
+        ('SAVINGS', 'Savings'),
+        ('CURRENT', 'Current'),
+        ('FIXED', 'Fixed Deposit'),
+    ]
+
+    name = models.CharField(max_length=100, help_text="Bank name")
+    account_name = models.CharField(max_length=100, help_text="Account holder's name")
+    account_number = models.CharField(max_length=50, unique=True)
+    account_type = models.CharField(max_length=10, choices=ACCOUNT_TYPES, default='SAVINGS')
+    balance = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.account_number}"
+    
+    def credit(self, amount):
+        """Increase balance"""
+        if amount > 0:
+            self.balance += amount
+            self.save()
+            return True
+        return False
+
+    def debit(self, amount):
+        """Decrease balance if enough money exists"""
+        if 0 < amount <= self.balance:
+            self.balance -= amount
+            self.save()
+            return True
+        return False
+ 
+    class Meta:
+        verbose_name = "Bank Account"
+        verbose_name_plural = "Bank Accounts"
+
+
+
+class Record(models.Model):
+    memo = models.ForeignKey(
+        'Memo',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='records'
+    )
+    manpower = models.ForeignKey(
+        'ManpowerMemo',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='records'
+    )
+    project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    amount = models.PositiveIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        type_name = "Memo" if self.memo else "ManpowerMemo"
+        return f"Record for {type_name} - {self.amount} Tk - {self.project}"

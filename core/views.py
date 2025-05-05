@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Company, Supplier, MenPower, Category, Item, Project, Memo, ManpowerMemo
-from .forms import CompanyForm, SupplierForm, MenPowerForm, CategoryForm, ItemForm,ProjectForm, MemoForm, ManpowerMemoForm
+from .models import Company, Supplier, MenPower, Category, Item, Project, Memo, ManpowerMemo, Bank, Record
+from .forms import CompanyForm, SupplierForm, MenPowerForm, CategoryForm, ItemForm,ProjectForm, MemoForm, ManpowerMemoForm, BankForm 
 
 from django.contrib.auth.decorators import user_passes_test
 
@@ -258,6 +258,15 @@ def project_delete(request, pk):
         return redirect('project_list')
     return render(request, 'project/project_confirm_delete.html', {'project': project})
 
+@staff_required
+def project_record_detail(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    records = Record.objects.filter(project=project).order_by('created_at')
+
+    return render(request, 'project/project_record_detail.html', {
+        'project': project,
+        'records': records,
+    })
 
 # MEMO CRUD
 
@@ -285,6 +294,15 @@ def memo_create(request):
 
             memo.save()
             form.save_m2m()  # For ManyToMany field 'items'
+            
+            
+            Record.objects.create(
+                memo=memo,
+                project=project,
+                amount=memo.amount,
+            )
+
+            return redirect('memo_list')
 
             return redirect('memo_list')
     else:
@@ -313,6 +331,12 @@ def memo_delete(request, pk):
         return redirect('memo_list')
     return render(request, 'memo/memo_confirm_delete.html', {'memo': memo})
 
+def memo_detail(request, pk):
+    memo = get_object_or_404(Memo, pk=pk)
+    return render(request, 'memo/memo_detail.html', {'memo': memo})
+
+
+
 
 # MANPOWER MEMO CRUD
 @staff_required
@@ -338,6 +362,13 @@ def manpowermemo_create(request):
             project.save()
 
             manpower_memo.save()
+            
+            Record.objects.create(
+                manpower=manpower_memo,
+                project=project,
+                amount=manpower_memo.amount,
+            ) 
+                        
             return redirect('manpowermemo_list')
     else:
         form = ManpowerMemoForm()
@@ -363,3 +394,48 @@ def manpowermemo_delete(request, pk):
         manpower_memo.delete()
         return redirect('manpowermemo_list')
     return render(request, 'hiring/manpowermemo_confirm_delete.html', {'manpower_memo': manpower_memo})
+
+def manpowermemo_detail(request, pk):
+    manpower_memo = get_object_or_404(ManpowerMemo, pk=pk)
+    return render(request, 'hiring/manpowermemo_detail.html', {'manpower_memo': manpower_memo})
+
+# Bank List
+@staff_required
+def bank_list(request):
+    accounts = Bank.objects.all()
+    return render(request, 'bank/bank_list.html', {'accounts': accounts})
+
+# Create
+@staff_required
+def bank_create(request):
+    if request.method == 'POST':
+        form = BankForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('bank_list')
+    else:
+        form = BankForm()
+    return render(request, 'bank/bank_form.html', {'form': form})
+
+
+# Update
+@staff_required
+def bank_update(request, pk):
+    account = get_object_or_404(Bank, pk=pk)
+    if request.method == 'POST':
+        form = BankForm(request.POST, instance=account)
+        if form.is_valid():
+            form.save()
+            return redirect('bank_list')
+    else:
+        form = BankForm(instance=account)
+    return render(request, 'bank/bank_form.html', {'form': form})
+
+# Delete
+@staff_required
+def bank_delete(request, pk):
+    account = get_object_or_404(Bank, pk=pk)
+    if request.method == 'POST':
+        account.delete()
+        return redirect('bank_list')
+    return render(request, 'bank/bank_confirm_delete.html', {'account': account})

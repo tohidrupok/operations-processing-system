@@ -1,0 +1,11 @@
+<h2>Bank Accounts</h2>
+<a href="{% url 'bank_create' %}">Create New Account</a>
+<ul>
+    {% for account in accounts %}
+        <li>
+            {{ account.name }} - {{ account.account_number }} - {{ account.balance }} 
+            <a href="{% url 'bank_update' account.pk %}">Edit</a> | 
+            <a href="{% url 'bank_delete' account.pk %}">Delete</a>
+        </li>
+    {% endfor %}
+</ul>

@@ -2,7 +2,7 @@
 {% block content %}
 {% load static %}
 
-<div class="container my-5">
+<div>
     <h1 class="text-center mb-4 text-primary">📊 Project List</h1>
 
     <!-- Create Button -->
@@ -16,6 +16,7 @@
                 <thead class="table-dark">
                     <tr>
                         <th>#</th>
+                        <th>Status</th>
                         <th>Project Name</th>
                         <th>Company</th>
                         <th>Location</th>
@@ -31,7 +32,13 @@
                     {% for project in projects %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ project.name }}</td>
+                        <td>{{ project.status }}</td>
+                       
+                        <td>
+                            <a href="{% url 'project_record_detail' project.pk %}">
+                                {{ project.name }}
+                            </a>
+                        </td>
                         <td>{{ project.company.name }}</td>
                         <td>{{ project.location }}</td>
                         <td>৳ {{ project.approximate_bill|floatformat:2 }}</td>
