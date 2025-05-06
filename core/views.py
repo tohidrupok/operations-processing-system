@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from django.db.models import Sum
 from .models import Company, Supplier, MenPower, Category, Item, Project, Memo, ManpowerMemo, Bank, Record
 from .forms import CompanyForm, SupplierForm, MenPowerForm, CategoryForm, ItemForm,ProjectForm, MemoForm, ManpowerMemoForm, BankForm 
 
@@ -296,6 +297,32 @@ def make_final_bill(request, pk):
             except ValueError:
                 messages.error(request, "Invalid final bill amount.")
     return redirect('project_record_detail', project_id=pk) 
+
+@staff_required   
+def company_projects_summary(request, company_id):
+    company = get_object_or_404(Company, pk=company_id)
+    projects = company.projects.all()
+
+    total_approximate = projects.aggregate(total=Sum('approximate_bill'))['total'] or 0
+    total_final = projects.aggregate(total=Sum('final_bill'))['total'] or 0
+    total_cost = projects.aggregate(total=Sum('current_cost'))['total'] or 0
+    total_paid = projects.aggregate(total=Sum('current_paid'))['total'] or 0
+
+    total_profit_or_loss = sum(p.profit_or_loss for p in projects)
+
+    context = {
+        'company': company,
+        'projects': projects,
+        'summary': {
+            'approximate': total_approximate,
+            'final': total_final,
+            'cost': total_cost,
+            'paid': total_paid,
+            'profit_or_loss': total_profit_or_loss
+        }
+    }
+    return render(request, 'project/company_single_summary.html', context) 
+
 
 # MEMO CRUD
 

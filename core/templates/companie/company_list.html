@@ -21,8 +21,8 @@
             </thead>
             <tbody>
                 {% for item in companies %}
-                <tr>
-                    <td>{{ item.name }}</td>
+                <tr> 
+                    <td> <a href="{% url 'company_projects_summary' item.pk %}"> {{ item.name}} </a> </td>
                     <td>{{ item.location }}</td>
                     <td>{{ item.phone }}</td>
                     <td>

@@ -1,0 +1,46 @@
+{% extends 'partials/base0.html' %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Company: {{ company.name }}</h5>
+        </div>
+        <div class="card-body">
+            <p><strong>Total Projects:</strong> {{ projects|length }}</p>
+            <p><strong>Total Approximate Bill:</strong> {{ summary.approximate }} Tk</p>
+            <p><strong>Total Final Bill:</strong> {{ summary.final }} Tk</p>
+            <p><strong>Total Cost:</strong> {{ summary.cost }} Tk</p>
+            <p><strong>Total Paid:</strong> {{ summary.paid }} Tk</p>
+            <p>
+                <strong>Total Profit/Loss:</strong> 
+                <span class="{% if summary.profit_or_loss < 0 %}text-danger{% else %}text-success{% endif %}">
+                    {{ summary.profit_or_loss }} Tk
+                </span>
+            </p>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            <h6 class="mb-0">Projects of {{ company.name }}</h6>
+        </div>
+        <div class="card-body">
+            {% for project in projects %}
+                <div class="border-bottom py-2">
+                    <strong>{{ project.name }}</strong> — 
+                    Final: {{ project.final_bill }} | Cost: {{ project.current_cost }} |
+                    {% if project.profit_or_loss < 0 %}
+                        <span class="text-danger">Loss: {{ project.profit_or_loss }}</span>
+                    {% else %}
+                        <span class="text-success">Profit: {{ project.profit_or_loss }}</span>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <p class="text-muted">No projects found.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

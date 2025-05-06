@@ -42,6 +42,8 @@ urlpatterns = [
     path('project/<int:project_id>/records/', views.project_record_detail, name='project_record_detail'),
     path('project/<int:pk>/close/', views.close_project, name='close_project'),
     path('project/<int:pk>/make-final-bill/', views.make_final_bill, name='make_final_bill'),
+    path('company/<int:company_id>/summary/', views.company_projects_summary, name='company_projects_summary'),
+
 
 
     # Memo
