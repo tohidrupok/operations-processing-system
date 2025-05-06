@@ -66,6 +66,15 @@ class Project(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.company.name})"
+    
+    
+    @property
+    def profit_or_loss(self):
+        if self.final_bill is not None and self.current_cost is not None:
+            return self.final_bill - self.current_cost
+        return 0
+
+    
 
 
 #Memo for item purchases

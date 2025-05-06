@@ -35,10 +35,13 @@ urlpatterns = [
     
     # Project
     path('projects/', views.project_list, name='project_list'),
+    path('projects/all/', views.all_project_list, name='all_project_list'),
     path('projects/create/', views.project_create, name='project_create'),
     path('projects/update/<int:pk>/', views.project_update, name='project_update'),
     path('projects/delete/<int:pk>/', views.project_delete, name='project_delete'),
     path('project/<int:project_id>/records/', views.project_record_detail, name='project_record_detail'),
+    path('project/<int:pk>/close/', views.close_project, name='close_project'),
+    path('project/<int:pk>/make-final-bill/', views.make_final_bill, name='make_final_bill'),
 
 
     # Memo

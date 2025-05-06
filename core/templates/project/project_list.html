@@ -21,11 +21,12 @@
                         <th>Company</th>
                         <th>Location</th>
                         <th>Approximate Bill</th>
-                        <th>Current Cost</th>
                         <th>Current Paid</th>
                         <th>Final Bill</th>
+                        <th>Current Cost</th>
+                        <th>Profit | Loss</th>
                         <th>Created At</th>
-                        <th class="text-end">Actions</th>
+                       
                     </tr>
                 </thead>
                 <tbody>
@@ -42,19 +43,14 @@
                         <td>{{ project.company.name }}</td>
                         <td>{{ project.location }}</td>
                         <td>৳ {{ project.approximate_bill|floatformat:2 }}</td>
-                        <td>৳ {{ project.current_cost|default:"0.00"|floatformat:2 }}</td>
                         <td>৳ {{ project.current_paid|default:"0.00"|floatformat:2 }}</td>
                         <td>৳ {{ project.final_bill|default:"0.00"|floatformat:2 }}</td>
-                        <td>{{ project.created_at|date:"d M Y" }}</td>
-                        <td class="text-end">
-                            <a href="{% url 'project_update' project.pk %}" class="text-warning text-decoration-none me-2" title="Edit">
-                                ✏️
-                            </a>
-                            <a href="{% url 'project_delete' project.pk %}" class="text-danger text-decoration-none" title="Delete">
-                                🗑️
-                            </a>
-                            
+                        <td>৳ {{ project.current_cost|default:"0.00"|floatformat:2 }}</td>  
+                        <td class="{% if project.profit_or_loss < 0 %}text-danger{% else %}text-success{% endif %}">
+                            ৳ {{ project.profit_or_loss|floatformat:2 }}
                         </td>
+                        <td>{{ project.created_at|date:"d M Y" }}</td>
+                        
                     </tr>
                     {% endfor %}
                 </tbody>

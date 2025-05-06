@@ -1,6 +1,7 @@
 {% extends 'partials/base0.html' %}
 {% block content %}
 {% load static %}
+
 <h2>{{ form.instance.pk|yesno:"Update Account,Create Account" }}</h2>
 <form method="post">
     {% csrf_token %}

@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from .models import Company, Supplier, MenPower, Category, Item, Project, Memo, ManpowerMemo, Bank, Record
 from .forms import CompanyForm, SupplierForm, MenPowerForm, CategoryForm, ItemForm,ProjectForm, MemoForm, ManpowerMemoForm, BankForm 
 
@@ -224,6 +225,10 @@ def project_list(request):
     projects = Project.objects.filter(status='RUNNING').order_by('-created_at')
     return render(request, 'project/project_list.html', {'projects': projects})
 
+def all_project_list(request):
+    projects = Project.objects.all()
+    return render(request, 'project/project_list.html', {'projects': projects})
+
 
 @staff_required
 def project_create(request):
@@ -267,6 +272,30 @@ def project_record_detail(request, project_id):
         'project': project,
         'records': records,
     })
+ 
+@staff_required   
+def close_project(request, pk):
+    project = get_object_or_404(Project, pk=pk)
+    if project.status != 'CLOSED':
+        project.status = 'CLOSED'
+        project.save()
+        messages.success(request, 'Project has been marked as Closed.')
+    return redirect('project_record_detail', project_id=pk)
+
+@staff_required   
+def make_final_bill(request, pk):
+    project = get_object_or_404(Project, pk=pk)
+
+    if request.method == 'POST':
+        final_bill = request.POST.get('final_bill')
+        if final_bill:
+            try:
+                project.final_bill = int(final_bill)
+                project.save()
+                messages.success(request, "Final bill updated successfully.")
+            except ValueError:
+                messages.error(request, "Invalid final bill amount.")
+    return redirect('project_record_detail', project_id=pk) 
 
 # MEMO CRUD
 

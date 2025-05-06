@@ -4,23 +4,43 @@
 
 <div class="container my-4">
     <div class="card shadow-sm mb-4">
-        <div class="card-header bg-primary text-white">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
             <h4 class="mb-0">Project Details</h4>
+            <div>
+                <a href="{% url 'project_update' project.pk %}" class="btn btn-sm btn-warning me-2" title="Edit">
+                    ✏️ Edit
+                </a>
+                <a href="{% url 'project_delete' project.pk %}" class="btn btn-sm btn-danger" title="Delete">
+                    🗑️ Delete
+                </a>
+            </div>
         </div>
+        
         <div class="card-body">
             <p><strong>Name:</strong> {{ project.name }}</p>
             <p><strong>Company:</strong> {{ project.company.name }}</p>
             <p><strong>Location:</strong> {{ project.location }}</p>
             <p><strong>Approximate Bill:</strong> {{ project.approximate_bill|default:"0" }} Tk</p>
-            <p><strong>Current Cost:</strong> {{ project.current_cost|default:"0" }} Tk</p>
-            <p><strong>Final Bill:</strong> {{ project.final_bill|default:"-" }}</p>
             <p><strong>Current Paid:</strong> {{ project.current_paid|default:"0" }} Tk</p>
+            <p><strong>Final Bill:</strong> {{ project.final_bill|default:"-" }}</p>
+            <p><strong>Current Cost:</strong> {{ project.current_cost|default:"0" }} Tk</p>
+            <hr>
+            <h5 class="{% if project.profit_or_loss < 0 %}text-danger{% else %}text-success{% endif %}">
+                {% if project.profit_or_loss < 0 %}
+                    Loss: {{ project.profit_or_loss }} Tk
+                {% else %}
+                    Profit: {{ project.profit_or_loss }} Tk
+                {% endif %}
+            </h5>
+            <hr>
             <p><strong>Status:</strong> 
                 <span class="badge 
-                    {% if project.status == 'completed' %}
-                        bg-success
-                    {% elif project.status == 'ongoing' %}
+                    {% if project.status == 'CLOSED' %}
+                        bg-danger
+                    {% elif project.status == 'RUNNING' %}
                         bg-warning text-dark
+                    {% elif project.status == 'TRIAL' %}
+                        bg-info text-dark
                     {% else %}
                         bg-secondary
                     {% endif %}
@@ -28,6 +48,32 @@
                     {{ project.status|capfirst }}
                 </span>
             </p>
+            
+            {% if not project.final_bill %}
+                <form method="post" action="{% url 'make_final_bill' project.pk %}" class="d-flex align-items-center gap-2 mt-2">
+                    {% csrf_token %}
+                    <input type="number" name="final_bill" step="0.01" placeholder="Enter Final Bill" class="form-control form-control-sm" required style="width: 200px;">
+                    <button type="submit" class="btn btn-sm btn-success">Make Final Bill</button>
+                </form>
+            {% else %}
+                <p><strong>Final Bill:</strong>
+                    <span class="text-success fw-bold">{{ project.final_bill }} Tk</span>
+                </p>
+            {% endif %} 
+
+            {% if project.status != 'CLOSED' %}
+                <form method="post" action="{% url 'close_project' project.pk %}" class="mt-3">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">Close Project</button>
+                </form>
+            {% else %}
+                <div class="alert alert-danger text-center fw-bold mt-3">
+                    Project is Closed
+                </div>
+            {% endif %}
+
+
+
         </div>
     </div>
 

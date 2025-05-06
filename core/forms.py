@@ -30,7 +30,7 @@ class ItemForm(forms.ModelForm):
 class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
-        fields = ['company', 'name', 'location','approximate_bill','status'] 
+        fields = ['company', 'name', 'location','approximate_bill','status','final_bill'] 
 
 class MemoForm(forms.ModelForm):
     class Meta:
