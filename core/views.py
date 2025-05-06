@@ -221,7 +221,7 @@ def item_delete(request, pk):
 # PROJECT CRUD
 @staff_required
 def project_list(request):
-    projects = Project.objects.all()
+    projects = Project.objects.filter(status='RUNNING').order_by('-created_at')
     return render(request, 'project/project_list.html', {'projects': projects})
 
 
@@ -403,7 +403,13 @@ def manpowermemo_detail(request, pk):
 @staff_required
 def bank_list(request):
     accounts = Bank.objects.all()
-    return render(request, 'bank/bank_list.html', {'accounts': accounts})
+    total_balance = sum(account.balance for account in accounts)
+    total_accounts = accounts.count()
+    return render(request, 'bank/bank_list.html', {
+        'accounts': accounts,
+        'total_balance': total_balance,
+        'total_accounts': total_accounts
+    })
 
 # Create
 @staff_required

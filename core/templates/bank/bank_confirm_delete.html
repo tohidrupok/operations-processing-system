@@ -1,3 +1,7 @@
+{% extends 'partials/base0.html' %}
+{% block content %}
+{% load static %}
+
 <h2>Confirm Delete</h2>
 <p>Are you sure you want to delete {{ account.name }} - {{ account.account_number }}?</p>
 <form method="post">
@@ -5,3 +9,4 @@
     <button type="submit">Yes, delete</button>
     <a href="{% url 'bank_list' %}">Cancel</a>
 </form>
+{% endblock %}
