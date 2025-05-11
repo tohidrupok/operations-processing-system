@@ -52,6 +52,7 @@ urlpatterns = [
     path('memos/update/<int:pk>/', views.memo_update, name='memo_update'),
     path('memos/delete/<int:pk>/', views.memo_delete, name='memo_delete'),
     path('memo/<int:pk>/', views.memo_detail, name='memo_detail'),
+    path('supplier/<int:supplier_id>/memos/', views.supplier_memo_summary, name='supplier_memo_summary'),
 
 
     # ManpowerMemo
@@ -60,6 +61,7 @@ urlpatterns = [
     path('manpower-memos/update/<int:pk>/', views.manpowermemo_update, name='manpowermemo_update'),
     path('manpower-memos/delete/<int:pk>/', views.manpowermemo_delete, name='manpowermemo_delete'),
     path('manpowermemo/<int:pk>/', views.manpowermemo_detail, name='manpowermemo_detail'),
+    path('worker/<int:worker_id>/manpowermemo/', views.worker_memo_summary, name='worker_memo_summary'),
     
      # bank
     path('bank/list/', views.bank_list, name='bank_list'),

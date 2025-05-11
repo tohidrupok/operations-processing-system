@@ -22,7 +22,11 @@
             <tbody>
                 {% for item in suppliers %}
                 <tr>
-                    <td>{{ item.name }}</td>
+                    <td>
+                            <a href="{% url 'supplier_memo_summary' item.pk %}">
+                                {{ item.name }}
+                            </a>
+                    </td>
                     <td>{{ item.location }}</td>
                     <td>{{ item.phone }}</td>
                     <td>

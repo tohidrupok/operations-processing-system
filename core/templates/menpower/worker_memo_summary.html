@@ -1,0 +1,49 @@
+{% extends 'partials/base0.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container my-5">
+    <div class="card shadow p-4">
+        <h2 class="text-success mb-4">Worker Memo Summary</h2>
+
+        <div class="mb-3">
+            <h4><strong>Worker:</strong> {{ worker.name }}</h4>
+            <p><strong>Total Memos:</strong> {{ total_memos }}</p>
+            <p><strong>Total Amount:</strong> <span class="text-success">{{ total_amount }} TK</span></p>
+            <p><strong>Total Payment Balance:</strong> <span class="text-warning">{{ total_payment_balance }} Tk</span></p>
+            <p><strong class="text-danger">Outstanding Balance:</strong>
+                <span class="badge bg-danger fs-6">
+                    {{ outstanding_balance }}
+                </span>
+            </p>
+        </div>
+
+        <hr>
+
+        <h4 class="mt-4">Memo List:</h4>
+        {% if memos %}
+            <div class="list-group">
+                {% for memo in memos %}
+                    <div class="list-group-item list-group-item-action mb-2 border rounded shadow-sm">
+                        <h5 class="mb-1 text-primary">{{ memo }}</h5>
+                        <p class="mb-1">
+                            <strong>Project:</strong> 
+                            <a href="{% url 'project_record_detail' memo.project.pk %}">
+                                {{ memo.project.name }}
+                            </a>
+                        </p>
+                        <p class="mb-1"><strong>Amount:</strong> {{ memo.amount }} TK</p>
+                        <p class="mb-1"><strong>Payment Balance:</strong> {{ memo.payment_balance }} TK</p>
+                        <small class="text-muted">Created: {{ memo.created_at|date:"Y-m-d" }}</small>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info mt-3">
+                No memos found for this worker.
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

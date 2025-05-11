@@ -392,6 +392,24 @@ def memo_detail(request, pk):
     return render(request, 'memo/memo_detail.html', {'memo': memo})
 
 
+@staff_required
+def supplier_memo_summary(request, supplier_id):
+    supplier = get_object_or_404(Supplier, id=supplier_id)
+    memos = Memo.objects.filter(supplier=supplier).select_related('project').prefetch_related('items')
+    total_memos = memos.count()
+    total_amount = memos.aggregate(total=Sum('amount'))['total'] or 0
+    total_payment_balance = memos.aggregate(balance=Sum('payment_balance'))['balance'] or 0
+    baki_tk = total_amount- total_payment_balance
+    context = {
+        'supplier': supplier,
+        'memos': memos,
+        'total_memos': total_memos,
+        'total_amount': total_amount,
+        'total_payment_balance': total_payment_balance,
+        'baki_tk': baki_tk,
+    }
+    return render(request, 'memo/supplier_memo_summary.html', context)
+
 
 
 # MANPOWER MEMO CRUD
@@ -451,9 +469,33 @@ def manpowermemo_delete(request, pk):
         return redirect('manpowermemo_list')
     return render(request, 'hiring/manpowermemo_confirm_delete.html', {'manpower_memo': manpower_memo})
 
+@staff_required
 def manpowermemo_detail(request, pk):
     manpower_memo = get_object_or_404(ManpowerMemo, pk=pk)
     return render(request, 'hiring/manpowermemo_detail.html', {'manpower_memo': manpower_memo})
+
+@staff_required
+def worker_memo_summary(request, worker_id):
+    worker = get_object_or_404(MenPower, id=worker_id)
+    memos = ManpowerMemo.objects.filter(worker=worker).select_related('project')
+    
+    total_memos = memos.count()
+    total_amount = memos.aggregate(total=Sum('amount'))['total'] or 0
+    total_payment_balance = memos.aggregate(balance=Sum('payment_balance'))['balance'] or 0
+    outstanding_balance = total_amount - total_payment_balance
+
+    context = {
+        'worker': worker,
+        'memos': memos,
+        'total_memos': total_memos,
+        'total_amount': total_amount,
+        'total_payment_balance': total_payment_balance,
+        'outstanding_balance': outstanding_balance,
+    }
+    return render(request, 'menpower/worker_memo_summary.html', context) 
+
+
+
 
 # Bank List
 @staff_required
@@ -480,7 +522,7 @@ def bank_create(request):
     return render(request, 'bank/bank_form.html', {'form': form})
 
 
-# Update
+# Update 
 @staff_required
 def bank_update(request, pk):
     account = get_object_or_404(Bank, pk=pk)
@@ -493,7 +535,7 @@ def bank_update(request, pk):
         form = BankForm(instance=account)
     return render(request, 'bank/bank_form.html', {'form': form})
 
-# Delete
+# Delete 
 @staff_required
 def bank_delete(request, pk):
     account = get_object_or_404(Bank, pk=pk)
