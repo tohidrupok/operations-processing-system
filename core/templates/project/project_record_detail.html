@@ -105,7 +105,7 @@
                                     <a href="{% url 'manpowermemo_detail' record.manpower.pk %}" class="btn btn-sm btn-outline-info">Manpower</a>
                                 {% endif %}
                             </td>
-                            <td>{{ record.note|default:"—" }}</td>
+                            <td>{{ record.memo.supplier.name }}{{ record.manpower.worker.name}}</td>
                             <td>{{ record.created_at|date:"Y-m-d H:i" }}</td>
                         </tr>
                     {% empty %}

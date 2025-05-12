@@ -227,7 +227,7 @@ def project_list(request):
     return render(request, 'project/project_list.html', {'projects': projects})
 
 def all_project_list(request):
-    projects = Project.objects.all()
+    projects = Project.objects.all().order_by('-created_at')
     return render(request, 'project/project_list.html', {'projects': projects})
 
 
@@ -265,10 +265,9 @@ def project_delete(request, pk):
     return render(request, 'project/project_confirm_delete.html', {'project': project})
 
 @staff_required
-def project_record_detail(request, project_id):
-    project = get_object_or_404(Project, id=project_id)
-    records = Record.objects.filter(project=project).order_by('created_at')
-
+def project_record_detail(request, project_id):   
+    project = get_object_or_404(Project, id=project_id)   
+    records = Record.objects.filter(project=project).order_by('-created_at')
     return render(request, 'project/project_record_detail.html', {
         'project': project,
         'records': records,
@@ -328,7 +327,7 @@ def company_projects_summary(request, company_id):
 
 @staff_required
 def memo_list(request):
-    memos = Memo.objects.all()
+    memos = Memo.objects.all().order_by('-created_at') 
     return render(request, 'memo/memo_list.html', {'memos': memos})
 
 
@@ -415,7 +414,7 @@ def supplier_memo_summary(request, supplier_id):
 # MANPOWER MEMO CRUD
 @staff_required
 def manpowermemo_list(request):
-    manpower_memos = ManpowerMemo.objects.all()
+    manpower_memos = ManpowerMemo.objects.all().order_by('-created_at') 
     return render(request, 'hiring/manpowermemo_list.html', {'manpower_memos': manpower_memos})
 
 
