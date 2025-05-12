@@ -476,7 +476,7 @@ def manpowermemo_detail(request, pk):
 @staff_required
 def worker_memo_summary(request, worker_id):
     worker = get_object_or_404(MenPower, id=worker_id)
-    memos = ManpowerMemo.objects.filter(worker=worker).select_related('project')
+    memos = ManpowerMemo.objects.filter(worker=worker).select_related('project').order_by('-created_at')
     
     total_memos = memos.count()
     total_amount = memos.aggregate(total=Sum('amount'))['total'] or 0

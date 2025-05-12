@@ -13,7 +13,7 @@
             <p><strong>Total Payment Balance:</strong> <span class="text-warning">{{ total_payment_balance }} Tk</span></p>
             <p><strong class="text-danger">Outstanding Balance:</strong>
                 <span class="badge bg-danger fs-6">
-                    {{ outstanding_balance }}
+                    {{ outstanding_balance }} TK
                 </span>
             </p>
         </div>
@@ -25,7 +25,14 @@
             <div class="list-group">
                 {% for memo in memos %}
                     <div class="list-group-item list-group-item-action mb-2 border rounded shadow-sm">
-                        <h5 class="mb-1 text-primary">{{ memo }}</h5>
+                        
+                        <h5 class="mb-1">
+                            <strong>ID:</strong> 
+                            <a href="{% url 'manpowermemo_detail' memo.pk %}">
+                                {{ memo.id }}-{{ memo }}
+                            </a>
+                        </h5> 
+
                         <p class="mb-1">
                             <strong>Project:</strong> 
                             <a href="{% url 'project_record_detail' memo.project.pk %}">
