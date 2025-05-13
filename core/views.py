@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.db.models import Sum
-from .models import Company, Supplier, MenPower, Category, Item, Project, Memo, ManpowerMemo, Bank, Record
-from .forms import CompanyForm, SupplierForm, MenPowerForm, CategoryForm, ItemForm,ProjectForm, MemoForm, ManpowerMemoForm, BankForm 
+from .models import Company, Supplier, MenPower, Category, Item, Project, Memo, ManpowerMemo, Record
+from .forms import CompanyForm, SupplierForm, MenPowerForm, CategoryForm, ItemForm,ProjectForm, MemoForm, ManpowerMemoForm 
 
 from django.contrib.auth.decorators import user_passes_test
 
@@ -495,50 +495,3 @@ def worker_memo_summary(request, worker_id):
 
 
 
-
-# Bank List
-@staff_required
-def bank_list(request):
-    accounts = Bank.objects.all()
-    total_balance = sum(account.balance for account in accounts)
-    total_accounts = accounts.count()
-    return render(request, 'bank/bank_list.html', {
-        'accounts': accounts,
-        'total_balance': total_balance,
-        'total_accounts': total_accounts
-    })
-
-# Create
-@staff_required
-def bank_create(request):
-    if request.method == 'POST':
-        form = BankForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('bank_list')
-    else:
-        form = BankForm()
-    return render(request, 'bank/bank_form.html', {'form': form})
-
-
-# Update 
-@staff_required
-def bank_update(request, pk):
-    account = get_object_or_404(Bank, pk=pk)
-    if request.method == 'POST':
-        form = BankForm(request.POST, instance=account)
-        if form.is_valid():
-            form.save()
-            return redirect('bank_list')
-    else:
-        form = BankForm(instance=account)
-    return render(request, 'bank/bank_form.html', {'form': form})
-
-# Delete 
-@staff_required
-def bank_delete(request, pk):
-    account = get_object_or_404(Bank, pk=pk)
-    if request.method == 'POST':
-        account.delete()
-        return redirect('bank_list')
-    return render(request, 'bank/bank_confirm_delete.html', {'account': account})

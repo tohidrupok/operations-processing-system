@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
     path('', include('accounts.urls')),
+    path('', include('finance.urls')),
     path('accounts/', include('django.contrib.auth.urls')),  # Built-in auth
     path('accounts/', include('accounts.urls')),   
     

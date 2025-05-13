@@ -5,12 +5,12 @@
 <h2>Bank Accounts</h2>
 
 <div style="margin-bottom: 20px;">
-    <a href="{% url 'bank_create' %}" style="background-color: #4CAF50; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;">➕ Create New Account</a>
+    <a href="{% url 'bank_account_create' %}" style="background-color: #4CAF50; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;">➕ Create New Account</a>
 </div>
 
 <div style="margin-bottom: 20px;">
     <strong>Total Accounts:</strong> {{ total_accounts }}<br>
-    <strong>Total Balance:</strong> ৳{{ total_balance }}
+    <strong>Total Balance:</strong> {{ total_balance }} TK
 </div>
 
 <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
@@ -27,14 +27,13 @@
     <tbody>
         {% for account in accounts %}
         <tr>
-            <td style="padding: 10px; border: 1px solid #ddd;">{{ account.name }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ account.bank.name }}</td>
             <td style="padding: 10px; border: 1px solid #ddd;">{{ account.account_name }}</td>
             <td style="padding: 10px; border: 1px solid #ddd;">{{ account.account_number }}</td>
             <td style="padding: 10px; border: 1px solid #ddd;">{{ account.get_account_type_display }}</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">৳{{ account.balance }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ account.balance }} TK</td>
             <td style="padding: 10px; border: 1px solid #ddd;">
-                <a href="{% url 'bank_update' account.pk %}">✏️ Edit</a> |
-                <a href="{% url 'bank_delete' account.pk %}" onclick="return confirm('Are you sure?');">🗑️ Delete</a>
+                <a href="{% url 'bank_account_update' account.pk %}">✏️ Edit</a> 
             </td>
         </tr>
         {% empty %}

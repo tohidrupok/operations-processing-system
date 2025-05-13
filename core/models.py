@@ -105,45 +105,6 @@ class ManpowerMemo(models.Model):
 
 
 
-class Bank(models.Model):
-    ACCOUNT_TYPES = [
-        ('SAVINGS', 'Savings'),
-        ('CURRENT', 'Current'),
-        ('FIXED', 'Fixed Deposit'),
-    ]
-
-    name = models.CharField(max_length=100, help_text="Bank name")
-    account_name = models.CharField(max_length=100, help_text="Account holder's name")
-    account_number = models.CharField(max_length=50, unique=True)
-    account_type = models.CharField(max_length=10, choices=ACCOUNT_TYPES, default='SAVINGS')
-    balance = models.PositiveIntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.name} - {self.account_number}"
-    
-    def credit(self, amount):
-        """Increase balance"""
-        if amount > 0:
-            self.balance += amount
-            self.save()
-            return True
-        return False
-
-    def debit(self, amount):
-        """Decrease balance if enough money exists"""
-        if 0 < amount <= self.balance:
-            self.balance -= amount
-            self.save()
-            return True
-        return False
- 
-    class Meta:
-        verbose_name = "Bank Account"
-        verbose_name_plural = "Bank Accounts"
-
-
-
 class Record(models.Model):
     memo = models.ForeignKey(
         'Memo',

@@ -7,6 +7,6 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Save</button>
-    <a href="{% url 'bank_list' %}">Back</a>
+    <a href="{% url 'bank_account_list' %}">Back</a>
 </form>
 {% endblock %}

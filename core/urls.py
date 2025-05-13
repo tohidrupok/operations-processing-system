@@ -62,12 +62,7 @@ urlpatterns = [
     path('manpower-memos/delete/<int:pk>/', views.manpowermemo_delete, name='manpowermemo_delete'),
     path('manpowermemo/<int:pk>/', views.manpowermemo_detail, name='manpowermemo_detail'),
     path('worker/<int:worker_id>/manpowermemo/', views.worker_memo_summary, name='worker_memo_summary'),
-    
-     # bank
-    path('bank/list/', views.bank_list, name='bank_list'),
-    path('bank/create/', views.bank_create, name='bank_create'),
-    path('bank/edit/<int:pk>/', views.bank_update, name='bank_update'),
-    path('bank/delete/<int:pk>/', views.bank_delete, name='bank_delete'),
+  
 
 ]
 
