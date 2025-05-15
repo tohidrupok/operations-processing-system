@@ -30,17 +30,23 @@ class ItemForm(forms.ModelForm):
 class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
-        fields = ['company', 'name', 'location','approximate_bill','status','final_bill'] 
+        fields = ['company', 'name', 'location','approximate_bill'] 
 
 class MemoForm(forms.ModelForm):
     class Meta:
         model = Memo
         fields = '__all__'
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['project'].queryset = Project.objects.filter(status='RUNNING')
 
 class ManpowerMemoForm(forms.ModelForm):
     class Meta:
         model = ManpowerMemo
         fields = '__all__'
         
-
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['project'].queryset = Project.objects.filter(status='RUNNING')
         

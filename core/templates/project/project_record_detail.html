@@ -3,17 +3,27 @@
 {% block content %}
 
 <div class="container my-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    📩 {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">Project Details</h4>
-            <div>
-                <a href="{% url 'project_update' project.pk %}" class="btn btn-sm btn-warning me-2" title="Edit">
-                    ✏️ Edit
-                </a>
-                <a href="{% url 'project_delete' project.pk %}" class="btn btn-sm btn-danger" title="Delete">
-                    🗑️ Delete
-                </a>
-            </div>
+            <h4 class="mb-0 text-white">Project Details</h4>
+            {% if not records %}
+                <div>
+                    <a href="{% url 'project_update' project.pk %}" class="btn btn-sm btn-warning me-2" title="Edit">
+                        ✏️ Edit
+                    </a>
+                    {% comment %} <a href="{% url 'project_delete' project.pk %}" class="btn btn-sm btn-danger" title="Delete">
+                        🗑️ Delete
+                    </a> {% endcomment %}
+                </div>
+            {% endif %}
         </div>
         
         <div class="card-body">
@@ -79,7 +89,7 @@
 
     <div class="card shadow-sm">
         <div class="card-header bg-dark text-white">
-            <h5 class="mb-0">All Related Records</h5>
+            <h5 class="mb-0 text-white ">All Related Records</h5>
         </div>
         <div class="card-body p-0">
             <table class="table table-striped table-hover mb-0">

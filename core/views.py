@@ -276,6 +276,11 @@ def project_record_detail(request, project_id):
 @staff_required   
 def close_project(request, pk):
     project = get_object_or_404(Project, pk=pk)
+    
+    if project.final_bill in [None, 0]:
+        messages.error(request, 'Cannot close the project because final bill is not set or zero.')
+        return redirect('project_record_detail', project_id=pk)
+
     if project.status != 'CLOSED':
         project.status = 'CLOSED'
         project.save()
