@@ -21,7 +21,7 @@
             <th style="padding: 10px; border: 1px solid #ddd;">Account Number</th>
             <th style="padding: 10px; border: 1px solid #ddd;">Type</th>
             <th style="padding: 10px; border: 1px solid #ddd;">Balance</th>
-            <th style="padding: 10px; border: 1px solid #ddd;">Actions</th>
+            {% comment %} <th style="padding: 10px; border: 1px solid #ddd;">Actions</th> {% endcomment %}
         </tr>
     </thead>
     <tbody>
@@ -32,9 +32,9 @@
             <td style="padding: 10px; border: 1px solid #ddd;">{{ account.account_number }}</td>
             <td style="padding: 10px; border: 1px solid #ddd;">{{ account.get_account_type_display }}</td>
             <td style="padding: 10px; border: 1px solid #ddd;">{{ account.balance }} TK</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">
+            {% comment %} <td style="padding: 10px; border: 1px solid #ddd;">
                 <a href="{% url 'bank_account_update' account.pk %}">✏️ Edit</a> 
-            </td>
+            </td> {% endcomment %}
         </tr>
         {% empty %}
         <tr>

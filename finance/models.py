@@ -64,11 +64,11 @@ class Transaction(models.Model):
     ]
 
     project = models.ForeignKey('core.Project', on_delete=models.CASCADE, related_name='transactions')
-    amount = models.PositiveIntegerField()
+    amount = models.PositiveIntegerField(help_text="Maximum allowed is 10,000,000 TK")
     type = models.CharField(max_length=10, choices=TYPE_CHOICES)
-    bank = models.ForeignKey('Bank', on_delete=models.SET_NULL, null=True, blank=True)
-    voucher_no = models.CharField(max_length=100, null=True, blank=True)
-    voucher_date = models.DateField(null=True, blank=True)
+    bank = models.ForeignKey('Bank', on_delete=models.SET_NULL, null=True, blank=True, help_text="Only fill this if payment is not Cash.")
+    voucher_no = models.CharField(max_length=100, null=True, blank=True,  help_text="Only fill this if payment is not Cash.")
+    voucher_date = models.DateField(null=True, blank=True, help_text="Example: 2025-12-31")
     receive_date = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PENDING')
     company_account = models.ForeignKey('BankAccount', on_delete=models.PROTECT) 
