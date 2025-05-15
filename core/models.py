@@ -73,7 +73,18 @@ class Project(models.Model):
         if self.final_bill is not None and self.current_cost is not None:
             return self.final_bill - self.current_cost
         return 0
+    
+    def add_payment(self, amount):
+        
+        if amount <= 0:
+            raise ValueError("Amount must be a positive integer greater than zero.")
 
+        if amount > 10_000_000:
+            raise ValueError("Amount too large. Maximum allowed is 10,000,000.")
+
+        self.current_paid = (self.current_paid or 0) + amount
+        self.save()
+        return True
     
 
 

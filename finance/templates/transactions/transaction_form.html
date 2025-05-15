@@ -1,13 +1,12 @@
 {% extends 'partials/base0.html' %}
 {% block content %}
-{% load static %}
+{% load static %}  
 
-<h2>{{ form.instance.pk|yesno:"Update Account,Create Account" }}</h2>
+<h2>{{ form.instance.pk|yesno:"Update Transaction,Create Transaction" }}</h2>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Save</button>
-    <a href="{% url 'bank_account_list' %}">Back</a>
 </form>
+<a href="{% url 'transaction_list' %}">Back</a>
 {% endblock %}
-

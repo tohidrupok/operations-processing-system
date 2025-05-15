@@ -1,0 +1,86 @@
+{% extends 'partials/base0.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+    }
+    .transaction-card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        border-radius: 1rem;
+        background-color: white;
+    }
+    .transaction-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    .card-title {
+        font-weight: 600;
+        color: #334e68;
+    }
+    .amount-highlight {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #2f4f4f;
+    }
+    .btn-sm {
+        font-size: 0.75rem;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary">💳 Transaction List</h2>
+        <a href="{% url 'transaction_create' %}" class="btn btn-success">+ Add New Transaction</a>
+    </div>
+
+    <div class="row">
+        {% for transaction in transactions %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card transaction-card border-0 shadow">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="card-title">{{ transaction.project }}</h5>
+                        <span class="badge 
+                            {% if transaction.status == 'APPROVED' %} bg-success 
+                            {% elif transaction.status == 'PENDING' %} bg-warning text-dark 
+                            {% else %} bg-danger 
+                            {% endif %}">
+                            {{ transaction.status }}
+                        </span>
+                    </div>
+                    <div class="amount-highlight mb-2">৳{{ transaction.amount }}</div>
+
+                    <p class="mb-1">
+                        <strong>Type:</strong> 
+                        <span class="badge 
+                            {% if transaction.type == 'CASH' %} bg-primary 
+                            {% elif transaction.type == 'CHEQUE' %} bg-secondary 
+                            {% elif transaction.type == 'FTGS' %} bg-info text-dark 
+                            {% else %} bg-dark 
+                            {% endif %}">
+                            {{ transaction.get_type_display }}
+                        </span>
+                    </p>
+                    <p class="mb-1"><strong>Bank:</strong> {{ transaction.bank }}</p>
+                    <p class="mb-1"><strong>Account:</strong> {{ transaction.company_account }}</p>
+                    <p class="mb-1"><strong>Voucher No:</strong> {{ transaction.voucher_no }}</p>
+                    <p class="mb-1"><strong>Voucher Date:</strong> {{ transaction.voucher_date|date:"M d, Y" }}</p>
+                    <p class="mb-3"><strong>JR Account:</strong> {{ transaction.company_account }}</p>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'transaction_detail' transaction.pk %}" class="btn btn-sm btn-outline-primary">🔍 View</a>
+                        <a href="{% url 'transaction_update' transaction.pk %}" class="btn btn-sm btn-outline-secondary">✏️ Edit</a>
+                        <a href="{% url 'transaction_delete' transaction.pk %}" class="btn btn-sm btn-outline-danger">🗑️ Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center text-muted">No transactions found.</div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

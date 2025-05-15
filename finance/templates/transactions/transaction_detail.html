@@ -1,0 +1,72 @@
+{% extends 'partials/base0.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container py-5 d-flex justify-content-center">
+    <div class="w-100" style="max-width: 600px;">  {# Reduced from 700px to 600px #}
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    📩 {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0  text-white">💳 Transaction ID {{ transaction.id }} Details</h5>
+                {% if transaction.status != 'APPROVED' %}
+                    <form method="post" action="{% url 'transaction_approve' transaction.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-light btn-sm fw-bold">✅ Approve Now</button>
+                    </form>
+                {% else %}
+                    <span class="badge px-3 py-2" style="background-color: #e65100; color: #ffffff;">
+  ✅ Approved (Locked)
+</span>
+                {% endif %}
+            </div>
+
+            <div class="card-body bg-light rounded-bottom-4">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between"><strong>Project:</strong> <span>{{ transaction.project }}</span></li>
+                    <li class="list-group-item d-flex justify-content-between"><strong>Amount:</strong> <span class="text-success fw-bold">৳{{ transaction.amount }}</span></li>
+                    <li class="list-group-item d-flex justify-content-between"><strong>Type:</strong> <span class="badge bg-info text-dark">{{ transaction.get_type_display }}</span></li>
+                    <li class="list-group-item d-flex justify-content-between"><strong>Status:</strong>
+                        <span>
+                            {% if transaction.status == 'APPROVED' %}
+                                <span class="badge bg-success">Approved</span>
+                            {% elif transaction.status == 'PENDING' %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% else %}
+                                <span class="badge bg-danger">Rejected</span>
+                            {% endif %}
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between"><strong>Bank:</strong> <span>{{ transaction.bank }}</span></li>
+                    <li class="list-group-item d-flex justify-content-between"><strong>Voucher No:</strong> <span>{{ transaction.voucher_no }}</span></li>
+                    <li class="list-group-item d-flex justify-content-between"><strong>Voucher Date:</strong> <span>{{ transaction.voucher_date|date:"F d, Y" }}</span></li>
+                    <li class="list-group-item d-flex justify-content-between"><strong>Receive Date:</strong>
+                        <span>
+                            {% if transaction.receive_date %}
+                                {{ transaction.receive_date|date:"F d, Y" }}
+                            {% else %}
+                                <em class="text-muted">Not yet received</em>
+                            {% endif %}
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between"><strong>Company Account:</strong> <span>{{ transaction.company_account }}</span></li>
+                </ul>
+            </div>
+
+            <div class="card-footer bg-white d-flex justify-content-between mt-3">
+                <span class="text-muted">🧾 Verified by Finance</span>
+                <a href="{% url 'transaction_list' %}" class="btn btn-outline-dark">⬅️ Back</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
