@@ -25,7 +25,7 @@ class BankAccount(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.bank.name} - {self.account_number}"
+        return f"{self.account_name}, {self.bank}"
 
     def credit(self, amount):
         """Increase balance"""

@@ -40,21 +40,28 @@
     <div class="col-md-6 col-lg-4 mb-4">
         <div class="card transaction-card border-0 shadow">
             <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h5 class="card-title">{{ transaction.project }}</h5>
-                    <span class="badge 
-                        {% if transaction.status == 'APPROVED' %} bg-success 
-                        {% elif transaction.status == 'PENDING' %} bg-warning text-dark 
-                        {% else %} bg-danger 
-                        {% endif %}">
-                        {{ transaction.status }}
-                    </span>
+                <div class="card shadow-sm border-0 mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <h5 class="mb-1 fw-bold">Transaction ID: {{ transaction.id }}</h5>
+                                <p class="mb-1 text-muted">Project: {{ transaction.project }}</p>
+                            </div>
+                            <span class="badge 
+                                {% if transaction.status == 'APPROVED' %} bg-success 
+                                {% elif transaction.status == 'PENDING' %} bg-warning text-dark 
+                                {% else %} bg-danger 
+                                {% endif %} px-3 py-2 fs-6 text-uppercase">
+                                {{ transaction.status }}
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="amount-highlight mb-2">৳{{ transaction.amount }}</div>
+                <div class="amount-highlight mb-2">৳{{ transaction.amount }} TK</div>
 
                 <p class="mb-1">
-                    <strong>Type:</strong> 
+                    <strong>Transaction Type:</strong> 
                     <span class="badge 
                         {% if transaction.type == 'CASH' %} bg-primary 
                         {% elif transaction.type == 'CHEQUE' %} bg-secondary 
