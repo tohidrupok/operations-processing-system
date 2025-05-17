@@ -3,7 +3,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
 
-from core.models import Project, Memo, ManpowerMemo
+from core.models import Project, Memo, ManpowerMemo, Record
 from finance.models import Transaction
 from django.db.models import Sum, F, ExpressionWrapper, IntegerField
 
@@ -53,10 +53,10 @@ def home_view(request):
     if request.user.is_staff:
         projects = Project.objects.filter(status='RUNNING').count()
         all_projects = Project.objects.all().count()
-        
         all_transaction= Transaction.objects.all().count()
-        
-        
+        #record
+        records = Record.objects.select_related('memo', 'manpower', 'project').order_by('-created_at')[:50]
+
         #pawna tk gula
         total_receivables = get_total_receivables_from_running_projects() 
         
@@ -65,7 +65,14 @@ def home_view(request):
         total_manpower_due = get_total_manpower_payables()
         total_all_due = total_market_due + total_manpower_due 
         
-        return render(request, 'home_staff.html', {'projects': projects, 'all_projects': all_projects, 'total_receivables': total_receivables, 'total_all_due':total_all_due, 'all_transaction': all_transaction }) 
+        context = {'projects': projects, 
+                   'all_projects': all_projects,
+                   'total_receivables': total_receivables,
+                   'total_all_due':total_all_due,
+                   'all_transaction': all_transaction, 
+                   'records': records }
+        
+        return render(request, 'home_staff.html', context) 
     
     else:
         return render(request, 'home.html')
