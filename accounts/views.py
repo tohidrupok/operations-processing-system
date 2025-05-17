@@ -56,6 +56,7 @@ def home_view(request):
         all_transaction= Transaction.objects.all().count()
         #record
         records = Record.objects.select_related('memo', 'manpower', 'project').order_by('-created_at')[:50]
+        transactions = Transaction.objects.select_related('project', 'bank', 'company_account').order_by('-created_at')[:50]
 
         #pawna tk gula
         total_receivables = get_total_receivables_from_running_projects() 
@@ -70,7 +71,8 @@ def home_view(request):
                    'total_receivables': total_receivables,
                    'total_all_due':total_all_due,
                    'all_transaction': all_transaction, 
-                   'records': records }
+                   'records': records,
+                   'transactions': transactions,}
         
         return render(request, 'home_staff.html', context) 
     
