@@ -53,7 +53,7 @@ def home_view(request):
     if request.user.is_staff:
         projects = Project.objects.filter(status='RUNNING').count()
         all_projects = Project.objects.all().count()
-        all_transaction= Transaction.objects.all().count()
+        all_transaction= Transaction.objects.filter(status='APPROVED').count()
         #record
         records = Record.objects.select_related('memo', 'manpower', 'project').order_by('-created_at')[:50]
         transactions = Transaction.objects.select_related('project', 'bank', 'company_account').order_by('-created_at')[:50]
