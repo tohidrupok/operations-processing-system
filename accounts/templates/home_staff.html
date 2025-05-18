@@ -98,40 +98,56 @@
 							</div>
 							<hr>
 							<div class="table-responsive">
-								<table class="table align-middle mb-0">
-									<thead class="table-light">
-										<tr>
-											<th>Transaction id</th>
-											<th>Project</th>
-											<th>Amount</th>
-											<th>Type</th>
-											<th>Bank</th>
-											<th>Voucher No</th>
-											<th>Receive Date</th>
-											<th>Status</th>
-
-										</tr>
-									</thead>
-									        <tbody>
-											{% for txn in transactions %}
-											<tr>
-												<td>{{ txn.id }}</td>
-												<td>{{ txn.project.name }}</td>
-												<td>{{ txn.amount }} Tk</td>
-												<td>{{ txn.get_type_display }}</td>
-												<td>{{ txn.bank.name  }}</td>
-												<td>{{ txn.voucher_no }}</td>
-												<td>{{ txn.receive_date }}</td>
-												<td>{{ txn.get_status_display }}</td>
-											</tr>
-											{% empty %}
-											<tr>
-												<td colspan="7" class="text-center">No transactions found</td>
-											</tr>
-											{% endfor %}
-											</tbody>
-								</table>
-							</div>
+				<table class="table align-middle mb-0">
+					<thead class="table-light">
+						<tr>
+							<th>Transaction ID</th>
+							<th>Project</th>
+							<th>Amount</th>
+							<th>Type</th>
+							<th>Bank</th>
+							<th>Voucher No</th>
+							<th>Receive Date</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for txn in transactions %}
+						<tr>
+							<td>#{{ txn.id }}</td>
+							<td>{{ txn.project.name }}</td>
+							<td>{{ txn.amount }} Tk</td>
+							<td>
+								<span class="badge 
+									{% if txn.type == 'CASH' %} bg-success 
+									{% elif txn.type == 'CHEQUE' %} bg-primary 
+									{% elif txn.type == 'FTGS' %} bg-info 
+									{% elif txn.type == 'OTHER' %} bg-warning 
+									{% else %} bg-secondary {% endif %}">
+									{{ txn.get_type_display }}
+								</span>
+							</td>
+							<td>{{ txn.bank.name }}</td>
+							<td>{{ txn.voucher_no }}</td>
+							<td>{{ txn.receive_date }}</td>
+							<td>
+								<span class="badge 
+									{% if txn.status == 'PENDING' %} bg-warning 
+									{% elif txn.status == 'APPROVED' %} bg-success 
+									{% elif txn.status == 'CANCELLED' %} bg-danger 
+									{% else %} bg-secondary {% endif %}">
+									{{ txn.get_status_display }}
+								</span>
+							</td>
+						</tr>
+						{% empty %}
+						<tr>
+							<td colspan="8" class="text-center">No transactions found</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
 						</div>
 					</div>
 					<div class="card radius-10">
@@ -158,30 +174,33 @@
 									</thead>
 									<tbody>
 										{% for record in records %}
-										<tr>
-											
-											<td>#{{record.id}}</td>
+										<tr >
+											<td>#{{ record.id }}</td>	
 											<td>
 												{{ record.project.name }}
 											</td>
-											<td>                    
+											<td>
 												{% if record.memo %}
-													Supplier Memo
+													<span class="badge bg-info text-dark">Supplier Memo</span>
 												{% elif record.manpower %}
-													Manpower Memo
+													<span class="badge bg-warning text-dark">Manpower Memo</span>
 												{% else %}
-													N/A
+													<span class="badge bg-secondary">N/A</span>
 												{% endif %}
 											</td>
-											<td>{{ record.amount }} Tk</td>
-											<td>{{ record.created_at|date:"d M Y, h:i A" }}</td>
-											
+
+											<td><strong>{{ record.amount }}</strong> <span class="text-muted">Tk</span></td>
+
+											<td>
+												<span class="text-nowrap">{{ record.created_at|date:"d M Y, h:i A" }}</span>
+											</td>
 										</tr>
 										{% empty %}
-											<tr>
-												<td colspan="5" class="text-center">No records found.</td>
-											</tr>
-											{% endfor %}
+										<tr>
+											<td colspan="5" class="text-center text-muted">No records found</td>
+										</tr>
+										{% endfor %}
+
 										
 									</tbody>
 								</table>
