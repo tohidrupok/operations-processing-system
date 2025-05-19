@@ -85,4 +85,41 @@ class Transaction(models.Model):
         ordering = ['-voucher_date']
  
  
- 
+class SupplierPayment(models.Model):
+    PAYMENT_TYPE_CHOICES = [
+        ('CASH', 'Cash'),
+        ('CHEQUE', 'Cheque'),
+        ('FTGS', 'FTGS'),
+        ('OTHER', 'Other'),
+    ]
+
+    memo = models.ForeignKey('core.Memo', on_delete=models.CASCADE)
+    amount = models.PositiveIntegerField()
+    type = models.CharField(max_length=20, choices=PAYMENT_TYPE_CHOICES)
+    bank_account = models.ForeignKey('BankAccount', on_delete=models.PROTECT)
+    check_number = models.CharField(max_length=100, blank=True, null=True, help_text="Only fill this if payment is not Cash.")
+    is_payment_done = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.memo} - {self.amount} ({self.type})"
+    
+    
+class MenPowerPayment(models.Model):
+    PAYMENT_TYPE_CHOICES = [
+        ('CASH', 'Cash'),
+        ('CHEQUE', 'Cheque'),
+        ('FTGS', 'FTGS'),
+        ('OTHER', 'Other'),
+    ]
+
+    menpowermemo = models.ForeignKey('core.ManpowerMemo', on_delete=models.CASCADE)
+    amount = models.PositiveIntegerField()
+    type = models.CharField(max_length=20, choices=PAYMENT_TYPE_CHOICES)
+    bank_account = models.ForeignKey('BankAccount', on_delete=models.PROTECT)
+    check_number = models.CharField(max_length=100, blank=True, null=True, help_text="Only fill this if payment is not Cash.")
+    is_payment_done = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.menpowermemo} - {self.amount} ({self.type})"
+    
+    

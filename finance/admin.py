@@ -5,3 +5,5 @@ from .models import *
 admin.site.register(Bank)
 admin.site.register(BankAccount)
 admin.site.register(Transaction)
+admin.site.register(SupplierPayment)
+admin.site.register(MenPowerPayment)

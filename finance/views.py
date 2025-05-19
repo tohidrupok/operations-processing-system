@@ -163,3 +163,46 @@ def transaction_approve(request, pk):
     # If GET or others - just redirect or show error
     messages.error(request, "Invalid request method.")
     return redirect('transaction_detail', pk=pk) 
+
+
+
+
+@staff_required
+def create_supplier_payment(request):
+    if request.method == 'POST':
+        form = SupplierPaymentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Supplier Payment created successfully.")
+            return redirect('create_supplier_payment')
+    else:
+        form = SupplierPaymentForm()
+    
+    return render(request, 'payment/supplier_payment_form.html', {'form': form})  
+
+
+@staff_required
+def supplier_payment_list(request):
+    payments = SupplierPayment.objects.select_related('memo', 'bank_account').all().order_by('-id')
+    return render(request, 'payment/supplier_payment_list.html', {'payments': payments})
+
+
+@staff_required
+def create_menpower_payment(request):
+    if request.method == 'POST':
+        form = MenPowerPaymentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Supplier Payment created successfully.")
+            return redirect('create_menpower_payment')
+    else:
+        form = MenPowerPaymentForm()
+    
+    return render(request, 'payment/menpower_payment_form.html', {'form': form})  
+
+
+@staff_required
+def menpower_payment_list(request):
+    payments = MenPowerPayment.objects.select_related('menpowermemo', 'bank_account').all().order_by('-id')
+    return render(request, 'payment/menpower_payment_list.html', {'payments': payments}) 
+

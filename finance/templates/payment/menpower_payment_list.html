@@ -1,0 +1,41 @@
+{% extends 'partials/base0.html' %}
+{% load static %}
+{% block content %}
+    <h2>MenPower Payment List</h2>
+
+    <a href="{% url 'create_menpower_payment' %}" class="btn btn-success mb-3">➕ Add MenPower Memo Payment</a>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>MenPower Memo</th>
+                <th>Amount</th>
+                <th>Type</th>
+                <th>Bank Account</th>
+                <th>Check No.</th>
+                <th>Paid?</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.id }}</td>
+                    <td>{{ payment.menpowermemo }}</td>
+                    <td>{{ payment.amount }}</td>
+                    <td>{{ payment.get_type_display }}</td>
+                    <td>{{ payment.bank_account }}</td>
+                    <td>{{ payment.check_number }}</td>
+                    <td>{{ payment.is_payment_done|yesno:"✅,❌" }}</td>
+                    <td>{{ payment.created_at|default:"-" }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="8">No supplier payments found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

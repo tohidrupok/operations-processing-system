@@ -17,7 +17,13 @@ urlpatterns = [
     path('pay/<int:pk>/delete/', views.transaction_delete, name='transaction_delete'),
     path('pay/<int:pk>/', views.transaction_detail, name='transaction_detail'),
     path('transactions/<int:pk>/approve/', views.transaction_approve, name='transaction_approve'),
-
+    
+    #payment
+    path('supplier-payment/create/', views.create_supplier_payment, name='create_supplier_payment'),
+    path('supplier-payment/list/', views.supplier_payment_list, name='supplier_payment_list'),
+    
+    path('menpower-payment/create/', views.create_menpower_payment, name='create_menpower_payment'),
+    path('menpower-payment/list/', views.menpower_payment_list, name='menpower_payment_list'),
 
 
 ]

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Bank , BankAccount, Transaction
+from .models import Bank , BankAccount, Transaction, SupplierPayment, MenPowerPayment
 from core.models import Project
 
 class BankForm(forms.ModelForm):
@@ -24,3 +24,25 @@ class TransactionForm(forms.ModelForm):
         self.fields['project'].queryset = Project.objects.filter(status='RUNNING')
         
   
+class SupplierPaymentForm(forms.ModelForm):
+    class Meta:
+        model = SupplierPayment
+        fields = ['memo', 'amount', 'type', 'bank_account', 'check_number', 'is_payment_done']
+        widgets = {
+            'type': forms.Select(attrs={'class': 'form-control'}),
+            'check_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'If not Cash'}),
+            'amount': forms.NumberInput(attrs={'class': 'form-control'}),
+            'is_payment_done': forms.CheckboxInput(),
+        }
+        
+        
+class MenPowerPaymentForm(forms.ModelForm):
+    class Meta:
+        model = MenPowerPayment
+        fields = ['menpowermemo', 'amount', 'type', 'bank_account', 'check_number', 'is_payment_done']
+        widgets = {
+            'type': forms.Select(attrs={'class': 'form-control'}),
+            'check_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'If not Cash'}),
+            'amount': forms.NumberInput(attrs={'class': 'form-control'}),
+            'is_payment_done': forms.CheckboxInput(),
+        }
