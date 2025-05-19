@@ -74,6 +74,13 @@ class Project(models.Model):
             return self.final_bill - self.current_cost
         return 0
     
+    @property
+    def due(self):
+        
+        if self.final_bill and self.final_bill > 0:
+            return self.final_bill - (self.current_paid or 0)
+        return 0  
+    
     def add_payment(self, amount):
         
         if amount <= 0:

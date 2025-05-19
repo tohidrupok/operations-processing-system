@@ -13,17 +13,19 @@
             <p><strong>Total Cost:</strong> {{ summary.cost }} Tk</p>
             <p><strong>Total Paid:</strong> {{ summary.paid }} Tk</p>
             <p>
-                <strong>Total Profit/Loss:</strong> 
+                <strong class="text-success">Total Profit/Loss:</strong> 
                 <span class="{% if summary.profit_or_loss < 0 %}text-danger{% else %}text-success{% endif %}">
                     {{ summary.profit_or_loss }} Tk
                 </span>
             </p>
+            <p><strong class="text-danger">Total Due:</strong> <span class="text-danger">{{ summary.total_due }} Tk</span></p>
+
         </div>
     </div>
 
     <div class="card shadow-sm">
         <div class="card-header bg-dark text-white">
-            <h6 class="mb-0">Projects of {{ company.name }}</h6>
+            <h6 class="mb-0 text-white">Projects of {{ company.name }}</h6>
         </div>
         <div class="card-body">
             {% for project in projects %}

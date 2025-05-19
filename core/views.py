@@ -313,6 +313,7 @@ def company_projects_summary(request, company_id):
     total_paid = projects.aggregate(total=Sum('current_paid'))['total'] or 0
 
     total_profit_or_loss = sum(p.profit_or_loss for p in projects)
+    total_due = sum(p.due for p in projects)
 
     context = {
         'company': company,
@@ -322,7 +323,8 @@ def company_projects_summary(request, company_id):
             'final': total_final,
             'cost': total_cost,
             'paid': total_paid,
-            'profit_or_loss': total_profit_or_loss
+            'profit_or_loss': total_profit_or_loss,
+            'total_due': total_due,
         }
     }
     return render(request, 'project/company_single_summary.html', context) 
@@ -399,7 +401,7 @@ def memo_detail(request, pk):
 @staff_required
 def supplier_memo_summary(request, supplier_id):
     supplier = get_object_or_404(Supplier, id=supplier_id)
-    memos = Memo.objects.filter(supplier=supplier).select_related('project').prefetch_related('items')
+    memos = Memo.objects.filter(supplier=supplier).select_related('project').prefetch_related('items').order_by('-created_at')
     total_memos = memos.count()
     total_amount = memos.aggregate(total=Sum('amount'))['total'] or 0
     total_payment_balance = memos.aggregate(balance=Sum('payment_balance'))['balance'] or 0
