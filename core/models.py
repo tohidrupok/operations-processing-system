@@ -106,7 +106,8 @@ class Memo(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Memo - {self.project.name}"
+        return f"ID:{self.id}-{self.supplier} | Amount: {self.amount} | Payment Balance: {self.payment_balance} | Project: {self.project.name}"
+
 
 
 # Memo for manpower payment
@@ -119,7 +120,7 @@ class ManpowerMemo(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Manpower Memo - {self.project.name}"
+        return f"ID:{self.id}-{self.worker} | Amount: {self.amount} | Payment Balance: {self.payment_balance} | Project: {self.project.name}"
 
 
 

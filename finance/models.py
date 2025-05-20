@@ -99,9 +99,10 @@ class SupplierPayment(models.Model):
     bank_account = models.ForeignKey('BankAccount', on_delete=models.PROTECT)
     check_number = models.CharField(max_length=100, blank=True, null=True, help_text="Only fill this if payment is not Cash.")
     is_payment_done = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.memo} - {self.amount} ({self.type})"
+        return f"SupplierPayment: {self.memo} - {self.amount} ({self.type})"
     
     
 class MenPowerPayment(models.Model):
@@ -118,8 +119,9 @@ class MenPowerPayment(models.Model):
     bank_account = models.ForeignKey('BankAccount', on_delete=models.PROTECT)
     check_number = models.CharField(max_length=100, blank=True, null=True, help_text="Only fill this if payment is not Cash.")
     is_payment_done = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.menpowermemo} - {self.amount} ({self.type})"
+        return f"MenPowerPayment: {self.menpowermemo} - {self.amount} ({self.type})"
     
     

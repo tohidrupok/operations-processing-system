@@ -174,7 +174,7 @@ def create_supplier_payment(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Supplier Payment created successfully.")
-            return redirect('create_supplier_payment')
+            return redirect('supplier_payment_list')
     else:
         form = SupplierPaymentForm()
     
@@ -183,7 +183,7 @@ def create_supplier_payment(request):
 
 @staff_required
 def supplier_payment_list(request):
-    payments = SupplierPayment.objects.select_related('memo', 'bank_account').all().order_by('-id')
+    payments = SupplierPayment.objects.select_related('memo', 'bank_account').all().order_by('-id')[:150]
     return render(request, 'payment/supplier_payment_list.html', {'payments': payments})
 
 
@@ -194,7 +194,7 @@ def create_menpower_payment(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Supplier Payment created successfully.")
-            return redirect('create_menpower_payment')
+            return redirect('menpower_payment_list')
     else:
         form = MenPowerPaymentForm()
     
@@ -203,6 +203,6 @@ def create_menpower_payment(request):
 
 @staff_required
 def menpower_payment_list(request):
-    payments = MenPowerPayment.objects.select_related('menpowermemo', 'bank_account').all().order_by('-id')
+    payments = MenPowerPayment.objects.select_related('menpowermemo', 'bank_account').all().order_by('-id')[:150]
     return render(request, 'payment/menpower_payment_list.html', {'payments': payments}) 
 
