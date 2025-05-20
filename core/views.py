@@ -334,7 +334,7 @@ def company_projects_summary(request, company_id):
 
 @staff_required
 def memo_list(request):
-    memos = Memo.objects.all().order_by('-created_at') 
+    memos = Memo.objects.filter(is_payment_done=False).order_by('-created_at') 
     return render(request, 'memo/memo_list.html', {'memos': memos})
 
 
@@ -421,7 +421,7 @@ def supplier_memo_summary(request, supplier_id):
 # MANPOWER MEMO CRUD
 @staff_required
 def manpowermemo_list(request):
-    manpower_memos = ManpowerMemo.objects.all().order_by('-created_at') 
+    manpower_memos = ManpowerMemo.objects.filter(is_payment_done=False).order_by('-created_at') 
     return render(request, 'hiring/manpowermemo_list.html', {'manpower_memos': manpower_memos})
 
 

@@ -102,8 +102,10 @@ class Memo(models.Model):
     items = models.ManyToManyField(Item, related_name='memos')
     amount = models.PositiveIntegerField(default=0)
     payment_balance = models.PositiveIntegerField(default=0, null=True, blank=True)
+    is_payment_done = models.BooleanField(default=False, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
 
     def __str__(self):
         return f"ID:{self.id}-{self.supplier} | Amount: {self.amount} | Payment Balance: {self.payment_balance} | Project: {self.project.name}"
@@ -116,6 +118,7 @@ class ManpowerMemo(models.Model):
     worker = models.ForeignKey(MenPower, on_delete=models.CASCADE, related_name='memos')
     amount = models.PositiveIntegerField(default=0)
     payment_balance = models.PositiveIntegerField(default=0)
+    is_payment_done = models.BooleanField(default=False, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

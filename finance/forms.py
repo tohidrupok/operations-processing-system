@@ -1,6 +1,6 @@
 from django import forms
 from .models import Bank , BankAccount, Transaction, SupplierPayment, MenPowerPayment
-from core.models import Project
+from core.models import Project, Memo, ManpowerMemo
 
 class BankForm(forms.ModelForm):
     class Meta:
@@ -35,6 +35,13 @@ class SupplierPaymentForm(forms.ModelForm):
             'is_payment_done': forms.CheckboxInput(),
         }
         
+    def __init__(self, *args, **kwargs):
+        super(SupplierPaymentForm, self).__init__(*args, **kwargs)
+        # Filter memo options: only those not fully paid
+        self.fields['memo'].queryset = Memo.objects.filter(is_payment_done=False)
+        self.fields['memo'].widget.attrs.update({'class': 'form-control'})
+        self.fields['bank_account'].widget.attrs.update({'class': 'form-control'})
+        
         
 class MenPowerPaymentForm(forms.ModelForm):
     class Meta:
@@ -46,3 +53,9 @@ class MenPowerPaymentForm(forms.ModelForm):
             'amount': forms.NumberInput(attrs={'class': 'form-control'}),
             'is_payment_done': forms.CheckboxInput(),
         }
+        
+    def __init__(self, *args, **kwargs):
+        super(MenPowerPaymentForm, self).__init__(*args, **kwargs)
+        self.fields['menpowermemo'].queryset = ManpowerMemo.objects.filter(is_payment_done=False)
+        self.fields['menpowermemo'].widget.attrs.update({'class': 'form-control'})
+        self.fields['bank_account'].widget.attrs.update({'class': 'form-control'})

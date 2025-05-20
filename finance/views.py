@@ -163,7 +163,7 @@ def transaction_approve(request, pk):
     # If GET or others - just redirect or show error
     messages.error(request, "Invalid request method.")
     return redirect('transaction_detail', pk=pk) 
-
+from django.db import transaction
 
 
 
@@ -172,13 +172,36 @@ def create_supplier_payment(request):
     if request.method == 'POST':
         form = SupplierPaymentForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Supplier Payment created successfully.")
+            with transaction.atomic():
+                payment = form.save(commit=False)
+                bank_account = payment.bank_account
+
+                
+                if bank_account.balance < payment.amount:
+                    messages.error(request, "❌ Not enough balance in the selected Bank Account.")
+                    return render(request, 'payment/supplier_payment_form.html', {'form': form})
+
+                bank_account.balance -= payment.amount
+                bank_account.save()
+
+            
+                memo = payment.memo
+                memo.payment_balance += payment.amount 
+                
+                if payment.is_payment_done:
+                    memo.is_payment_done = True
+                memo.save()
+
+                # Save payment
+                payment.save()
+
+            
+            messages.success(request, "✅ Supplier Payment created successfully.")
             return redirect('supplier_payment_list')
     else:
         form = SupplierPaymentForm()
-    
-    return render(request, 'payment/supplier_payment_form.html', {'form': form})  
+
+    return render(request, 'payment/supplier_payment_form.html', {'form': form})
 
 
 @staff_required
@@ -192,13 +215,35 @@ def create_menpower_payment(request):
     if request.method == 'POST':
         form = MenPowerPaymentForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Supplier Payment created successfully.")
+            with transaction.atomic():
+                payment = form.save(commit=False)
+
+                # Step 1: Check bank balance before proceeding
+                bank = payment.bank_account
+                if bank.balance < payment.amount:
+                    messages.error(request, "❌ Not enough balance in the selected Bank Account.")
+                    return render(request, 'payment/menpower_payment_form.html', {'form': form})
+
+                # Step 2: Deduct balance
+                bank.balance -= payment.amount
+                bank.save()
+
+                # Step 3: Update ManpowerMemo
+                memo = payment.menpowermemo
+                memo.payment_balance += payment.amount
+                if payment.is_payment_done:
+                    memo.is_payment_done = True
+                memo.save()
+
+                # Step 4: Save payment
+                payment.save()
+
+            messages.success(request, "✅ MenPower Payment created successfully.")
             return redirect('menpower_payment_list')
     else:
         form = MenPowerPaymentForm()
     
-    return render(request, 'payment/menpower_payment_form.html', {'form': form})  
+    return render(request, 'payment/menpower_payment_form.html', {'form': form}) 
 
 
 @staff_required

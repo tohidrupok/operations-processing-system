@@ -35,7 +35,7 @@ class ProjectForm(forms.ModelForm):
 class MemoForm(forms.ModelForm):
     class Meta:
         model = Memo
-        fields = '__all__'
+        fields = ['project', 'supplier', 'items','amount']
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -44,7 +44,7 @@ class MemoForm(forms.ModelForm):
 class ManpowerMemoForm(forms.ModelForm):
     class Meta:
         model = ManpowerMemo
-        fields = '__all__'
+        fields = ['project', 'worker', 'amount']
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
