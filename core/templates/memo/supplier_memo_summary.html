@@ -25,7 +25,7 @@
             <div class="list-group">
                 {% for memo in memos %}
                     <div class="list-group-item list-group-item-action mb-2 border rounded shadow-sm">
-                        <h5 class="mb-1 text-primary">ID:{{ memo.id }} {{ memo }}</h5>
+                        <h5 class="mb-1 text-primary"> {{ memo }}</h5>
                         <p class="mb-1">
                             <strong>Project:</strong> 
                             <a href="{% url 'project_record_detail' memo.project.pk %}">
