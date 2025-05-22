@@ -5,10 +5,13 @@ from .forms import *
 from django.contrib import messages
 from django.utils import timezone
 from django.db import transaction as db_transaction
+from datetime import date, timedelta
+from django.db.models import Sum
+
+
 
 def staff_required(view_func):
     return user_passes_test(lambda u: u.is_authenticated and u.is_staff)(view_func) 
-
 
 
 # Bank List
@@ -251,3 +254,57 @@ def menpower_payment_list(request):
     payments = MenPowerPayment.objects.select_related('menpowermemo', 'bank_account').all().order_by('-id')[:150]
     return render(request, 'payment/menpower_payment_list.html', {'payments': payments}) 
 
+
+
+def approved_income_transaction_total(request):
+    # Get date range from request parameters or use default last 30 days
+    end_date = request.GET.get('end_date', date.today())
+    start_date = request.GET.get('start_date', date.today() - timedelta(days=30))
+
+    # Convert to date objects if they are strings (from GET request)
+    if isinstance(start_date, str):
+        start_date = date.fromisoformat(start_date)
+    if isinstance(end_date, str):
+        end_date = date.fromisoformat(end_date)
+
+    # Filter approved transactions in the date range
+    total_amount = Transaction.objects.filter(
+        status='APPROVED',
+        voucher_date__range=(start_date, end_date)
+    ).aggregate(total=Sum('amount'))['total'] or 0
+
+    context = {
+        'start_date': start_date,
+        'end_date': end_date,
+        'total_amount': total_amount
+    }
+
+    return render(request, 'transactions/approved_income_total.html', context)
+
+
+def combined_payment_total(request):
+    
+    end_date = request.GET.get('end_date', date.today())
+    start_date = request.GET.get('start_date', date.today() - timedelta(days=30))
+
+    if isinstance(start_date, str):
+        start_date = date.fromisoformat(start_date)
+    if isinstance(end_date, str):
+        end_date = date.fromisoformat(end_date)
+
+
+    supplier_total = SupplierPayment.objects.filter(created_at__date__range=(start_date, end_date)).aggregate(total=Sum('amount'))['total'] or 0
+
+    menpower_total = MenPowerPayment.objects.filter( created_at__date__range=(start_date, end_date)).aggregate(total=Sum('amount'))['total'] or 0
+
+    grand_total = supplier_total + menpower_total
+
+    context = {
+        'start_date': start_date,
+        'end_date': end_date,
+        'supplier_total': supplier_total,
+        'menpower_total': menpower_total,
+        'grand_total': grand_total
+    }
+
+    return render(request, 'transactions/payment_summary.html', context)

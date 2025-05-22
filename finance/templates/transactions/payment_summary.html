@@ -1,0 +1,49 @@
+{% extends 'partials/base0.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4 text-primary fw-bold">Payment Summary</h2>
+
+            <!-- Date Filter Form -->
+            <form method="get" class="row g-3 justify-content-center">
+                <div class="col-md-4">
+                    <label for="start_date" class="form-label fw-semibold">From Date</label>
+                    <input type="date" id="start_date" name="start_date" class="form-control" value="{{ start_date }}">
+                </div>
+                <div class="col-md-4">
+                    <label for="end_date" class="form-label fw-semibold">To Date</label>
+                    <input type="date" id="end_date" name="end_date" class="form-control" value="{{ end_date }}">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100 fw-semibold">Filter</button>
+                </div>
+            </form>
+
+            <hr class="my-4">
+
+            <!-- Payment Summary -->
+            <div class="text-center">
+                <h5 class="text-secondary">Payment Summary from {{ start_date }} to {{ end_date }}</h5>
+                <ul class="list-group list-group-flush mt-3">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Supplier Payments:</strong>
+                        <span class="text-success">{{ supplier_total|floatformat:2 }} TK</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>MenPower Payments:</strong>
+                        <span class="text-success">{{ menpower_total|floatformat:2 }} TK</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between bg-light">
+                        <strong class="text-dark">Grand Total:</strong>
+                        <span class="fw-bold text-primary">{{ grand_total|floatformat:2 }} TK</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'partials/base0.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4 text-primary fw-bold">Transaction Summary</h2>
+
+            <form method="get" class="row g-3 justify-content-center">
+                <div class="col-md-4">
+                    <label for="start_date" class="form-label fw-semibold">From Date</label>
+                    <input type="date" id="start_date" name="start_date" class="form-control" value="{{ start_date }}">
+                </div>
+                <div class="col-md-4">
+                    <label for="end_date" class="form-label fw-semibold">To Date</label>
+                    <input type="date" id="end_date" name="end_date" class="form-control" value="{{ end_date }}">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100 fw-semibold">Filter</button>
+                </div>
+            </form>
+
+            <hr class="my-4">
+
+            <div class="text-center">
+                <h4 class="text-success fw-bold">Total Approved Transactions</h4>
+                <p class="fs-4 mb-0">{{ total_amount|floatformat:2 }} <span class="text-muted">TK</span></p>
+                <small class="text-muted">From {{ start_date }} to {{ end_date }}</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

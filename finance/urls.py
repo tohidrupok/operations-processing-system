@@ -24,6 +24,9 @@ urlpatterns = [
     
     path('menpower-payment/create/', views.create_menpower_payment, name='create_menpower_payment'),
     path('menpower-payment/list/', views.menpower_payment_list, name='menpower_payment_list'),
+    
+    path('approved-total/', views.approved_income_transaction_total, name='approved_transaction_total'),
+    path('payment-summary/', views.combined_payment_total, name='payment_summary'),
 
 
 ]
