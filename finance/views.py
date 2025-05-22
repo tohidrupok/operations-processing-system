@@ -255,19 +255,17 @@ def menpower_payment_list(request):
     return render(request, 'payment/menpower_payment_list.html', {'payments': payments}) 
 
 
-
+@staff_required
 def approved_income_transaction_total(request):
-    # Get date range from request parameters or use default last 30 days
+    
     end_date = request.GET.get('end_date', date.today())
     start_date = request.GET.get('start_date', date.today() - timedelta(days=30))
 
-    # Convert to date objects if they are strings (from GET request)
     if isinstance(start_date, str):
         start_date = date.fromisoformat(start_date)
     if isinstance(end_date, str):
         end_date = date.fromisoformat(end_date)
 
-    # Filter approved transactions in the date range
     total_amount = Transaction.objects.filter(
         status='APPROVED',
         voucher_date__range=(start_date, end_date)
@@ -281,7 +279,7 @@ def approved_income_transaction_total(request):
 
     return render(request, 'transactions/approved_income_total.html', context)
 
-
+@staff_required
 def combined_payment_total(request):
     
     end_date = request.GET.get('end_date', date.today())
