@@ -388,5 +388,42 @@ def update_loan(request, pk):
 # LIST Loans with status = PENDING
 @staff_required
 def loan_list_pending(request):
-    loans = Loan.objects.filter(status='PENDING')
-    return render(request, 'loan/loan_list_pending.html', {'loans': loans})
+    loans = Loan.objects.all().order_by('-created_at')
+    return render(request, 'loan/loan_list_pending.html', {'loans': loans}) 
+
+
+@staff_required
+def mark_loan_as_paid(request, loan_id):
+    loan = get_object_or_404(Loan, id=loan_id)
+
+    if loan.status == 'APPROVED':
+        loan.status = 'PAID'
+        loan.save()
+        messages.success(request, f"Loan from {loan.loan_provider_name} marked as paid.")
+    else:
+        messages.warning(request, "Only approved loans can be marked as paid.")
+
+    return redirect('loan_list_pending')  
+
+
+@staff_required
+@transaction.atomic
+def mark_loan_as_approved(request, loan_id):
+    loan = get_object_or_404(Loan, id=loan_id)
+
+    if loan.status == 'PENDING':
+        loan.status = 'APPROVED'
+        loan.receive_date = timezone.now().date() 
+        loan.save()
+
+        # Bank balance update korbo jodi bank account thake
+        if loan.bank_account:
+            loan.bank_account.balance += loan.amount
+            loan.bank_account.save()
+
+        messages.success(request, f"Loan from {loan.loan_provider_name} marked as Approved and added to bank balance.")
+    else:
+        messages.warning(request, "Only PENDING loans can be marked as APPROVED.")
+
+    return redirect('loan_list_pending')
+

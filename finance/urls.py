@@ -33,6 +33,9 @@ urlpatterns = [
     path('loans/create/', views.create_loan, name='create_loan'),
     path('loans/<int:pk>/update/', views.update_loan, name='update_loan'),
     path('loans/pending/', views.loan_list_pending, name='loan_list_pending'),
+    
+    path('loan/<int:loan_id>/mark-paid/', views.mark_loan_as_paid, name='mark_loan_as_paid'),
+    path('loan/<int:loan_id>/mark-approved/', views.mark_loan_as_approved, name='mark_loan_as_approved'),
 
 
 ]

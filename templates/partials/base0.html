@@ -171,6 +171,7 @@
 						</li>
 						<li> <a href="{% url 'bank_account_list' %}"><i class="bx bx-right-arrow-alt"></i>Bank Account List</a>
 						</li>
+						<li> <a href="{% url 'transfer_view' %}"><i class="bx bx-right-arrow-alt"></i>Transfer Balance </a></li>
 					</ul>
 				</li> 
 
@@ -182,12 +183,27 @@
 						<div class="menu-title">Transaction </div>
 					</a>
 					<ul>
-						<li> <a href="{% url 'transfer_view' %}"><i class="bx bx-right-arrow-alt"></i>Transfer Balance </a></li>
+						
 						<li> <a href="{% url 'transaction_list' %}"><i class="bx bx-right-arrow-alt"></i>Received from client</a></li>
 						<li> <a href="{% url 'supplier_payment_list' %}"><i class="bx bx-right-arrow-alt"></i>Paid to supplier</a></li> 
 						<li> <a href="{% url 'menpower_payment_list' %}"><i class="bx bx-right-arrow-alt"></i>Paid to worker</a></li>
 					</ul>
 				</li> 
+
+				<li class="menu-label">Locan</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bx-wallet'></i>
+						</div>
+						<div class="menu-title">Load </div>
+					</a>
+					<ul>
+						<li> <a href="{% url 'create_loan' %}"><i class="bx bx-right-arrow-alt"></i>Create a New Loan </a></li>
+						<li> <a href="{% url 'loan_list_pending' %}"><i class="bx bx-right-arrow-alt"></i>list of Pending Loan</a></li>
+
+					</ul>
+				</li>  
+
 
 				{% comment %} <li>
 					<a class="has-arrow" href="javascript:;">

@@ -140,7 +140,7 @@ class Loan(models.Model):
         ('PENDING', 'Pending'),
         ('APPROVED', 'Loan Approved'),
         ('PAID', 'Payment Done'),
-        ('CLEARED', 'Loan Cleared'),
+        
     ]
 
     loan_provider_name = models.CharField(max_length=100, help_text="Name of the person or organization giving the loan")

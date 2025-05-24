@@ -1,25 +1,91 @@
 {% extends 'partials/base0.html' %}
 {% load static %}
 {% block content %}
-<h2>Pending Loans</h2>
-<table border="1">
-    <tr>
-        <th>Provider</th>
-        <th>Amount</th>
-        <th>Type</th>
-        <th>Status</th>
-        <th>Actions</th>
-    </tr>
-    {% for loan in loans %}
-    <tr>
-        <td>{{ loan.loan_provider_name }}</td>
-        <td>{{ loan.amount }}</td>
-        <td>{{ loan.get_loan_giver_type_display }}</td>
-        <td>{{ loan.get_status_display }}</td>
-        <td><a href="{% url 'update_loan' loan.pk %}">Edit</a></td>
-    </tr>
-    {% empty %}
-    <tr><td colspan="5">No pending loans found.</td></tr>
-    {% endfor %}
-</table>
+<div class="container my-4">
+    <h2 class="text-center mb-4"> Loan Dashboard </h2>
+    {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+    {% endif %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>Provider</th>
+                    <th>Amount</th>
+                    <th>Paid Amount</th>
+                    <th>Account</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                    <th>Current Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loan in loans %}
+                <tr>
+                    <td>{{ loan.loan_provider_name }}</td>
+                    <td>{{ loan.amount }}</td>
+                    <td>{{ loan.payment_amount }}</td>
+                    <td>{{ loan.bank_account}}</td>
+                    <td>
+                        {% if loan.status == 'PENDING' %}
+                        <span class="badge rounded-pill  bg-danger" title="Loan is pending approval">
+                            ⚠️ Pending
+                        </span>
+                        {% elif loan.status == 'APPROVED' %}
+                        <span class="badge rounded-pill bg-success" title="Loan approved and active">
+                            ✅ Approved
+                        </span>
+                        {% elif loan.status == 'PAID' %}
+                        <span class="badge rounded-pill bg-warning text-dark" title="Loan has been rejected">
+                            ✅  Loan Clear
+                        </span>
+                        {% else %}
+                        <span class="badge rounded-pill bg-secondary">
+                            {{ loan.get_status_display }}
+                        </span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if loan.status == 'PENDING' %}
+                            <button onclick="location.href='{% url 'mark_loan_as_approved' loan.pk %}'" 
+                                    class="btn btn-warning btn-sm w-100" 
+                                    title="Approve this loan">
+                                🟡 Make Approved
+                            </button>
+                        {% elif loan.status == 'APPROVED' %}
+                            <button onclick="location.href='{% url 'mark_loan_as_paid' loan.pk %}'" 
+                                    class="btn btn-success btn-sm w-100" 
+                                    title="Mark loan as cleared">
+                                💵 Make Loan Clear
+                            </button>
+                        {% elif loan.status == 'PAID' %}
+                            <button class="btn btn-secondary btn-sm w-100" disabled>
+                                ✅ Loan Cleared
+                            </button>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if loan.status == 'PENDING' %}
+                            <a href="{% url 'update_loan' loan.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                        {% elif loan.status == 'APPROVED' %}
+                            <a href="" class="btn btn-sm btn-outline-success"> Pay Now</a>
+                        {% elif loan.status == 'PAID' %}
+                            <span class="text-muted">✅🧾 Loan Clear</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center">No pending loans found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
