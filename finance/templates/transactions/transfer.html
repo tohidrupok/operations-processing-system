@@ -1,0 +1,103 @@
+{% extends 'partials/base0.html' %}
+{% load static %}
+{% block content %}
+
+
+<style>
+    body {
+        background: linear-gradient(to right, #f0f2f5, #e0e7ff);
+    }
+
+    .bank-transfer-card {
+        border-radius: 1.25rem;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .bank-header {
+        background-color: #0d6efd;
+        color: white;
+        padding: 1.5rem;
+        border-top-left-radius: 1.25rem;
+        border-top-right-radius: 1.25rem;
+        text-align: center;
+    }
+
+    .bank-body {
+        background-color: #f8f9fa;
+        padding: 2rem;
+    }
+
+    .btn-transfer {
+        background-color: #198754;
+        border: none;
+        font-weight: bold;
+    }
+
+    .btn-transfer:hover {
+        background-color: #157347;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card bank-transfer-card">
+                <div class="bank-header">
+                    <h3>💸 Transfer Money</h3>
+                </div>
+                <div class="bank-body">
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label for="sender_account" class="form-label">Sender Account</label>
+                            <select name="sender_account_number" id="sender_account" class="form-select" required>
+                                <option value="" disabled selected>Select sender account</option>
+                                {% for account in accounts %}
+                                    <option value="{{ account.account_number }}">
+                                        {{ account.account_name }} ({{ account.account_number }}) - ৳{{ account.balance }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="receiver_account" class="form-label">Receiver Account</label>
+                            <select name="receiver_account_number" id="receiver_account" class="form-select" required>
+                                <option value="" disabled selected>Select receiver account</option>
+                                {% for account in accounts %}
+                                    <option value="{{ account.account_number }}">
+                                        {{ account.account_name }} ({{ account.account_number }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Amount (৳)</label>
+                            <input type="number" name="amount" id="amount" class="form-control" min="1" placeholder="Enter amount to transfer" required>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-transfer btn-lg rounded-pill">Transfer Now</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

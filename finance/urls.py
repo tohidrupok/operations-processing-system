@@ -27,6 +27,7 @@ urlpatterns = [
     
     path('approved-total/', views.approved_income_transaction_total, name='approved_transaction_total'),
     path('payment-summary/', views.combined_payment_total, name='payment_summary'),
+    path('transfer/', views.transfer_view, name='transfer_view'),
 
 
 ]

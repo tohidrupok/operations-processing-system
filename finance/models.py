@@ -125,3 +125,38 @@ class MenPowerPayment(models.Model):
         return f"MenPowerPayment: {self.menpowermemo} - {self.amount} ({self.type})"
     
     
+    
+
+class Loan(models.Model):
+    LOAN_GIVER_TYPE_CHOICES = [
+        ('CASH', 'Cash'),
+        ('BANK', 'Bank Deposit'),
+        ('MOBILE', 'Bkash / Nogod / Rocket'),
+        ('CHEQUE', 'Cheque'),
+    ]
+
+    STATUS_CHOICES = [
+        ('PENDING', 'Pending'),
+        ('APPROVED', 'Loan Approved'),
+        ('PAID', 'Payment Done'),
+        ('CLEARED', 'Loan Cleared'),
+    ]
+
+    loan_provider_name = models.CharField(max_length=100, help_text="Name of the person or organization giving the loan")
+    loan_giver_type = models.CharField(max_length=10, choices=LOAN_GIVER_TYPE_CHOICES)
+    amount = models.PositiveIntegerField()
+    bank_account = models.ForeignKey('BankAccount', on_delete=models.SET_NULL, null=True, blank=True, help_text="Linked bank account if applicable")
+    payment_amount = models.PositiveIntegerField(default=0)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PENDING')
+
+    cheque_number = models.CharField(max_length=50, blank=True, null=True)
+    cheque_date = models.DateField(blank=True, null=True)
+
+    voucher_number = models.CharField(max_length=50, blank=True, null=True)
+    voucher_date = models.DateField(blank=True, null=True)
+    receive_date = models.DateField(null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.loan_provider_name} - {self.amount} ({self.get_status_display()})"

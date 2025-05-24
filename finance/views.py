@@ -305,4 +305,52 @@ def combined_payment_total(request):
         'grand_total': grand_total
     }
 
-    return render(request, 'transactions/payment_summary.html', context)
+    return render(request, 'transactions/payment_summary.html', context) 
+
+
+
+@staff_required
+def transfer_view(request):
+    if request.method == 'POST':
+        sender_number = request.POST.get('sender_account_number')
+        receiver_number = request.POST.get('receiver_account_number')
+        amount = request.POST.get('amount')
+        
+        if sender_number == receiver_number:
+            messages.error(request, "Sender and receiver cannot be the same account.")
+            return redirect('transfer_view')  # or render with context if not using redirect 
+        
+        try:
+            amount = int(amount)
+            if amount <= 0:
+                messages.error(request, "Amount must be greater than 0.")
+                return redirect('transfer_view')
+
+            with transaction.atomic():
+                sender = BankAccount.objects.select_for_update().get(account_number=sender_number)
+                receiver = BankAccount.objects.select_for_update().get(account_number=receiver_number)
+
+                if sender.balance < amount:
+                    messages.error(request, "Insufficient balance in sender account.")
+                    return redirect('transfer_view')
+
+                sender.balance -= amount
+                receiver.balance += amount
+
+                sender.save()
+                receiver.save()
+
+                messages.success(request, f"Successfully transferred {amount} from {sender.account_name} to {receiver.account_name}.")
+                return redirect('transfer_view')
+
+        except BankAccount.DoesNotExist:
+            messages.error(request, "Invalid account number.")
+        except ValueError:
+            messages.error(request, "Invalid amount.")
+        except Exception as e:
+            messages.error(request, f"Unexpected error: {str(e)}")
+        return redirect('transfer_view')
+
+    accounts = BankAccount.objects.all()
+    return render(request, 'transactions/transfer.html', {'accounts': accounts})
+    
