@@ -1,5 +1,5 @@
 from django import forms
-from .models import Bank , BankAccount, Transaction, SupplierPayment, MenPowerPayment
+from .models import Bank , BankAccount, Transaction, SupplierPayment, MenPowerPayment, Loan
 from core.models import Project, Memo, ManpowerMemo
 
 class BankForm(forms.ModelForm):
@@ -58,4 +58,39 @@ class MenPowerPaymentForm(forms.ModelForm):
         super(MenPowerPaymentForm, self).__init__(*args, **kwargs)
         self.fields['menpowermemo'].queryset = ManpowerMemo.objects.filter(is_payment_done=False)
         self.fields['menpowermemo'].widget.attrs.update({'class': 'form-control'})
-        self.fields['bank_account'].widget.attrs.update({'class': 'form-control'})
+        self.fields['bank_account'].widget.attrs.update({'class': 'form-control'})  
+        
+        
+        
+class LoanForm(forms.ModelForm):
+    class Meta:
+        model = Loan
+        fields = '__all__'
+        widgets = {
+            'cheque_date': forms.DateInput(attrs={'type': 'date'}),
+            'voucher_date': forms.DateInput(attrs={'type': 'date'}),
+        }
+        
+    def __init__(self, *args, **kwargs):
+        loan_giver_type = kwargs.pop('loan_giver_type', None)
+        super().__init__(*args, **kwargs)
+
+        if loan_giver_type in ['CASH', 'BANK', 'MOBILE', 'CHEQUE']:
+            self.fields['bank_account'].queryset = BankAccount.objects.filter(account_type=loan_giver_type)
+        else:
+            self.fields['bank_account'].queryset = BankAccount.objects.all()
+
+    def clean(self):
+        cleaned_data = super().clean()
+        loan_type = cleaned_data.get('loan_giver_type')
+
+        if loan_type == 'CHEQUE':
+            if not cleaned_data.get('cheque_number'):
+                self.add_error('cheque_number', 'This field is required for cheque loans.')
+            if not cleaned_data.get('cheque_date'):
+                self.add_error('cheque_date', 'This field is required for cheque loans.')
+            if not cleaned_data.get('voucher_number'):
+                self.add_error('voucher_number', 'This field is required for cheque loans.')
+            if not cleaned_data.get('voucher_date'):
+                self.add_error('voucher_date', 'This field is required for cheque loans.')
+        return cleaned_data

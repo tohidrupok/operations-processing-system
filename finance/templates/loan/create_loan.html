@@ -1,0 +1,45 @@
+{% extends 'partials/base0.html' %}
+{% load static %}
+{% block content %}
+<h2>{% if loan %}Update{% else %}Create{% endif %} Loan</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    {{ form.loan_provider_name.label_tag }} {{ form.loan_provider_name }}<br><br>
+    {{ form.loan_giver_type.label_tag }} {{ form.loan_giver_type }}<br><br>
+    {{ form.amount.label_tag }} {{ form.amount }}<br><br>
+    {{ form.bank_account.label_tag }} {{ form.bank_account }}<br><br>
+    {{ form.payment_amount.label_tag }} {{ form.payment_amount }}<br><br>
+    {{ form.status.label_tag }} {{ form.status }}<br><br>
+
+    <div id="cheque-fields" style="display:none;">
+        {{ form.cheque_number.label_tag }} {{ form.cheque_number }}<br><br>
+        {{ form.cheque_date.label_tag }} {{ form.cheque_date }}<br><br>
+        {{ form.voucher_number.label_tag }} {{ form.voucher_number }}<br><br>
+        {{ form.voucher_date.label_tag }} {{ form.voucher_date }}<br><br>
+    </div>
+
+    <button type="submit">{% if loan %}Update{% else %}Create{% endif %}</button>
+</form>
+
+<script>
+    function toggleChequeFields() {
+        const type = document.getElementById("id_loan_giver_type").value;
+        const chequeFields = document.getElementById("cheque-fields");
+        if (type === "CHEQUE") {
+            chequeFields.style.display = "block";
+        } else {
+            chequeFields.style.display = "none";
+            document.getElementById("id_cheque_number").value = "";
+            document.getElementById("id_cheque_date").value = "";
+            document.getElementById("id_voucher_number").value = "";
+            document.getElementById("id_voucher_date").value = "";
+        }
+    }
+
+    document.getElementById("id_loan_giver_type").addEventListener("change", toggleChequeFields);
+    window.addEventListener("load", toggleChequeFields);
+</script>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'partials/base0.html' %}
+{% load static %}
+{% block content %}
+<h2>Pending Loans</h2>
+<table border="1">
+    <tr>
+        <th>Provider</th>
+        <th>Amount</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    {% for loan in loans %}
+    <tr>
+        <td>{{ loan.loan_provider_name }}</td>
+        <td>{{ loan.amount }}</td>
+        <td>{{ loan.get_loan_giver_type_display }}</td>
+        <td>{{ loan.get_status_display }}</td>
+        <td><a href="{% url 'update_loan' loan.pk %}">Edit</a></td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5">No pending loans found.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

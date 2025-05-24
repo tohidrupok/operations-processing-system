@@ -12,9 +12,10 @@ class Bank(models.Model):
 # BankAccount Model
 class BankAccount(models.Model):
     ACCOUNT_TYPES = [
-        ('SAVINGS', 'Savings'),
-        ('CURRENT', 'Current'),
-        ('FIXED', 'Fixed Deposit'),
+        ('CASH', 'Cash'),
+        ('BANK', 'Bank Deposit'),
+        ('MOBILE', 'Bkash / Nogod / Rocket'),
+        ('CHEQUE', 'Cheque'),
     ]
 
     bank = models.ForeignKey(Bank, on_delete=models.SET_NULL, null=True, blank=True, help_text="Select bank name")

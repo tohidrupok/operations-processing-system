@@ -354,3 +354,39 @@ def transfer_view(request):
     accounts = BankAccount.objects.all()
     return render(request, 'transactions/transfer.html', {'accounts': accounts})
     
+    
+#হালত টাকা
+
+@staff_required
+def create_loan(request):
+    if request.method == 'POST':
+        form = LoanForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Loan created successfully.")
+            return redirect('loan_list_pending')
+    else:
+        form = LoanForm()
+    return render(request, 'loan/create_loan.html', {'form': form})
+
+
+# UPDATE Loan
+@staff_required
+def update_loan(request, pk):
+    loan = get_object_or_404(Loan, pk=pk)
+    if request.method == 'POST':
+        form = LoanForm(request.POST, instance=loan)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Loan updated successfully.")
+            return redirect('loan_list_pending')
+    else:
+        form = LoanForm(instance=loan)
+    return render(request, 'loan/update_loan.html', {'form': form, 'loan': loan})
+
+
+# LIST Loans with status = PENDING
+@staff_required
+def loan_list_pending(request):
+    loans = Loan.objects.filter(status='PENDING')
+    return render(request, 'loan/loan_list_pending.html', {'loans': loans})
