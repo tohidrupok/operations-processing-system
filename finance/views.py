@@ -397,13 +397,16 @@ def mark_loan_as_paid(request, loan_id):
     loan = get_object_or_404(Loan, id=loan_id)
 
     if loan.status == 'APPROVED':
-        loan.status = 'PAID'
-        loan.save()
-        messages.success(request, f"Loan from {loan.loan_provider_name} marked as paid.")
+        if loan.payment_amount >= loan.amount:
+            loan.status = 'PAID'
+            loan.save()
+            messages.success(request, f"Loan from {loan.loan_provider_name} marked as PAID.")
+        else:
+            messages.warning(request, "Payment amount is less than loan amount. Cannot mark as PAID.")
     else:
-        messages.warning(request, "Only approved loans can be marked as paid.")
+        messages.warning(request, "Only APPROVED loans can be marked as PAID.")
 
-    return redirect('loan_list_pending')  
+    return redirect('loan_list_pending')
 
 
 @staff_required
