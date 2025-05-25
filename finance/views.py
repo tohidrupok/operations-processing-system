@@ -435,21 +435,36 @@ def mark_loan_as_approved(request, loan_id):
 @transaction.atomic
 def create_payloan_view(request, loan_id):
     loan = get_object_or_404(Loan, pk=loan_id)
+    payloans = loan.payments.all()
 
     if request.method == 'POST':
         form = PayLoanForm(request.POST)
         if form.is_valid():
             payloan = form.save(commit=False)
             payloan.loan = loan
+
+            # Check for bank account and balance
+            if payloan.bank_account:
+                if payloan.bank_account.balance < payloan.amount:
+                    messages.error(request, "❌ Selected bank account does not have enough balance.")
+                    return render(request, 'loan/create_payloan.html', {'form': form, 'loan': loan})
+                
+                # Deduct amount from bank account
+                payloan.bank_account.balance -= payloan.amount
+                payloan.bank_account.save()
+
+            # Save the PayLoan instance
             payloan.save()
 
+            # Update loan payment
             loan.payment_amount += payloan.amount
             if loan.payment_amount >= loan.amount:
                 loan.status = 'PAID'
             loan.save()
 
+            messages.success(request, "✅ Payment successfully recorded.")
             return redirect('loan_list_pending')
     else:
         form = PayLoanForm()
 
-    return render(request, 'loan/create_payloan.html', {'form': form, 'loan': loan})  
+    return render(request, 'loan/create_payloan.html', {'form': form, 'loan': loan, 'payloans': payloans})
