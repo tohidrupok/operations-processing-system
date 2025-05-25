@@ -3,25 +3,62 @@
 {% block content %}
 <h2>{% if loan %}Update{% else %}Create{% endif %} Loan</h2>
 
-<form method="post">
+<form method="post" style="max-width: 700px; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 6px; background: #f9f9f9;">
     {% csrf_token %}
     {{ form.non_field_errors }}
 
-    {{ form.loan_provider_name.label_tag }} {{ form.loan_provider_name }}<br><br>
-    {{ form.loan_giver_type.label_tag }} {{ form.loan_giver_type }}<br><br>
-    {{ form.amount.label_tag }} {{ form.amount }}<br><br>
-    {{ form.bank_account.label_tag }} {{ form.bank_account }}<br><br>
-    {{ form.payment_amount.label_tag }} {{ form.payment_amount }}<br><br>
-    {{ form.status.label_tag }} {{ form.status }}<br><br>
-
-    <div id="cheque-fields" style="display:none;">
-        {{ form.cheque_number.label_tag }} {{ form.cheque_number }}<br><br>
-        {{ form.cheque_date.label_tag }} {{ form.cheque_date }}<br><br>
-        {{ form.voucher_number.label_tag }} {{ form.voucher_number }}<br><br>
-        {{ form.voucher_date.label_tag }} {{ form.voucher_date }}<br><br>
+    <div style="margin-bottom: 18px;">
+        {{ form.loan_provider_name.label_tag }}<br>
+        {{ form.loan_provider_name }}
+        {{ form.loan_provider_name.errors }}
     </div>
 
-    <button type="submit">{% if loan %}Update{% else %}Create{% endif %}</button>
+    <div style="margin-bottom: 18px;">
+        {{ form.loan_giver_type.label_tag }}<br>
+        {{ form.loan_giver_type }}
+        {{ form.loan_giver_type.errors }}
+    </div>
+
+    <div style="margin-bottom: 18px;">
+        {{ form.amount.label_tag }}<br>
+        {{ form.amount }}
+        {{ form.amount.errors }}
+    </div>
+
+    <div style="margin-bottom: 18px;">
+        {{ form.bank_account.label_tag }}<br>
+        {{ form.bank_account }}
+        {{ form.bank_account.errors }}
+    </div>
+
+
+
+    <div id="cheque-fields" style="display:none; margin-bottom: 18px; padding-left: 15px; border-left: 3px solid #ccc;">
+        <div style="margin-bottom: 12px;">
+            {{ form.cheque_number.label_tag }}<br>
+            {{ form.cheque_number }}
+            {{ form.cheque_number.errors }}
+        </div>
+        <div style="margin-bottom: 12px;">
+            {{ form.cheque_date.label_tag }}<br>
+            {{ form.cheque_date }}
+            {{ form.cheque_date.errors }}
+        </div>
+        <div style="margin-bottom: 12px;">
+            {{ form.voucher_number.label_tag }}<br>
+            {{ form.voucher_number }}
+            {{ form.voucher_number.errors }}
+        </div>
+        <div>
+            {{ form.voucher_date.label_tag }}<br>
+            {{ form.voucher_date }}
+            {{ form.voucher_date.errors }}
+        </div>
+    </div>
+
+    <button type="submit" style="padding: 10px 25px; font-size: 17px; cursor: pointer; border-radius: 4px; border: none; background-color: #28a745; color: white;">
+        {% if loan %}Update{% else %}Create{% endif %}
+    </button>
 </form>
 
 <script>

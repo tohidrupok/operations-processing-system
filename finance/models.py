@@ -147,8 +147,8 @@ class Loan(models.Model):
     loan_giver_type = models.CharField(max_length=10, choices=LOAN_GIVER_TYPE_CHOICES)
     amount = models.PositiveIntegerField()
     bank_account = models.ForeignKey('BankAccount', on_delete=models.SET_NULL, null=True, blank=True, help_text="Linked bank account if applicable")
-    payment_amount = models.PositiveIntegerField(default=0)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PENDING')
+    payment_amount = models.PositiveIntegerField(default=0, null=True, blank=True, )
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PENDING', null=True, blank=True, )
 
     cheque_number = models.CharField(max_length=50, blank=True, null=True)
     cheque_date = models.DateField(blank=True, null=True)

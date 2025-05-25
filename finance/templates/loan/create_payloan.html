@@ -48,7 +48,7 @@
                     {% for p in payloans %}
                     <tr>
                         <th scope="row">#{{ p.id }}</th>
-                        <td >{{ p.amount}} TK</td>
+                        <td>{{ p.amount }} TK</td>
                         <td>{{ p.get_payloan_giver_type_display }}</td>
                         <td>
                             {% if p.bank_account %}
@@ -73,17 +73,43 @@
     <h4 class="mb-3">Add a New Payment</h4>
     <form method="POST" class="needs-validation" novalidate>
         {% csrf_token %}
-        {{ form.as_p }}
+
+        <div class="mb-3">
+            {{ form.amount.label_tag }} {{ form.amount }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.payloan_giver_type.label_tag }} {{ form.payloan_giver_type }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.bank_account.label_tag }} {{ form.bank_account }}
+        </div>
+
+        <!-- Cheque fields (hidden unless CHEQUE is selected) -->
+        <div id="cheque-fields" class="ps-3 border-start border-2 border-secondary mb-3" style="display: none;">
+            <div class="mb-2">
+                {{ form.cheque_number.label_tag }} {{ form.cheque_number }}
+            </div>
+            <div class="mb-2">
+                {{ form.cheque_date.label_tag }} {{ form.cheque_date }}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            {{ form.note.label_tag }} {{ form.note }}
+        </div>
 
         <div class="d-flex gap-3 mt-3">
             <button type="submit" class="btn btn-primary px-4">Submit Payment</button>
-            <a href="{% url 'admin:finance_loan_changelist' %}" class="btn btn-outline-secondary px-4">Cancel</a>
+            <a href="{% url 'loan_list_pending' %}" class="btn btn-outline-secondary px-4">Cancel</a>
         </div>
     </form>
 </div>
 
+<!-- JS for form validation and cheque toggle -->
 <script>
-// Bootstrap 5 validation example
+// Bootstrap 5 validation
 (() => {
   'use strict';
   const forms = document.querySelectorAll('.needs-validation');
@@ -97,5 +123,26 @@
     }, false);
   });
 })();
+
+// Toggle cheque fields
+function toggleChequeFields() {
+    const type = document.getElementById("id_payloan_giver_type").value;
+    const chequeFields = document.getElementById("cheque-fields");
+    if (type === "CHEQUE") {
+        chequeFields.style.display = "block";
+    } else {
+        chequeFields.style.display = "none";
+        document.getElementById("id_cheque_number").value = "";
+        document.getElementById("id_cheque_date").value = "";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const typeField = document.getElementById("id_payloan_giver_type");
+    if (typeField) {
+        toggleChequeFields(); // Initial call
+        typeField.addEventListener("change", toggleChequeFields);
+    }
+});
 </script>
 {% endblock %}

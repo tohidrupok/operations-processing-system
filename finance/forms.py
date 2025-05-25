@@ -107,11 +107,13 @@ class PayLoanForm(forms.ModelForm):
         }
      
         
-    def __init__(self, *args, **kwargs):
-        payloan_giver_type = kwargs.pop('loan_giver_type', None)
-        super().__init__(*args, **kwargs)
+    def clean(self):
+        cleaned_data = super().clean()
+        loan_type = cleaned_data.get('payloan_giver_type')
 
-        if payloan_giver_type in ['CASH', 'BANK', 'MOBILE', 'CHEQUE']:
-            self.fields['bank_account'].queryset = BankAccount.objects.filter(account_type=payloan_giver_type)
-        else:
-            self.fields['bank_account'].queryset = BankAccount.objects.all()
+        if loan_type == 'CHEQUE':
+            if not cleaned_data.get('cheque_number'):
+                self.add_error('cheque_number', 'This field is required for cheque loans.')
+            if not cleaned_data.get('cheque_date'):
+                self.add_error('cheque_date', 'This field is required for cheque loans.')
+        return cleaned_data
