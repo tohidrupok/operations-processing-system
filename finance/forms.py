@@ -1,5 +1,5 @@
 from django import forms
-from .models import Bank , BankAccount, Transaction, SupplierPayment, MenPowerPayment, Loan
+from .models import Bank , BankAccount, Transaction, SupplierPayment, MenPowerPayment, Loan, PayLoan
 from core.models import Project, Memo, ManpowerMemo
 
 class BankForm(forms.ModelForm):
@@ -93,4 +93,25 @@ class LoanForm(forms.ModelForm):
                 self.add_error('voucher_number', 'This field is required for cheque loans.')
             if not cleaned_data.get('voucher_date'):
                 self.add_error('voucher_date', 'This field is required for cheque loans.')
-        return cleaned_data
+        return cleaned_data 
+    
+    
+class PayLoanForm(forms.ModelForm):
+    class Meta:
+        model = PayLoan
+        fields = ['amount', 'payloan_giver_type', 'bank_account', 'cheque_number', 'cheque_date', 'note']
+        
+        widgets = {
+            'cheque_date': forms.DateInput(attrs={'type': 'date'}),
+            
+        }
+     
+        
+    def __init__(self, *args, **kwargs):
+        payloan_giver_type = kwargs.pop('loan_giver_type', None)
+        super().__init__(*args, **kwargs)
+
+        if payloan_giver_type in ['CASH', 'BANK', 'MOBILE', 'CHEQUE']:
+            self.fields['bank_account'].queryset = BankAccount.objects.filter(account_type=payloan_giver_type)
+        else:
+            self.fields['bank_account'].queryset = BankAccount.objects.all()

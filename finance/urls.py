@@ -37,6 +37,7 @@ urlpatterns = [
     path('loan/<int:loan_id>/mark-paid/', views.mark_loan_as_paid, name='mark_loan_as_paid'),
     path('loan/<int:loan_id>/mark-approved/', views.mark_loan_as_approved, name='mark_loan_as_approved'),
 
+    path('payloan/create/<int:loan_id>/', views.create_payloan_view, name='create_payloan'),
 
 ]
 

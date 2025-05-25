@@ -161,3 +161,26 @@ class Loan(models.Model):
 
     def __str__(self):
         return f"{self.loan_provider_name} - {self.amount} ({self.get_status_display()})"
+    
+    
+    
+    
+class PayLoan(models.Model):
+    LOAN_TYPE_CHOICES = [
+        ('CASH', 'Cash'),
+        ('BANK', 'Bank Deposit'),
+        ('MOBILE', 'Bkash / Nogod / Rocket'),
+        ('CHEQUE', 'Cheque'),
+    ]
+
+    loan = models.ForeignKey(Loan, on_delete=models.CASCADE, related_name='payments')
+    amount = models.PositiveIntegerField()
+    payloan_giver_type = models.CharField(max_length=10, choices=LOAN_TYPE_CHOICES)
+    bank_account = models.ForeignKey(BankAccount, on_delete=models.SET_NULL, null=True, blank=True)
+    cheque_number = models.CharField(max_length=50, blank=True, null=True)
+    cheque_date = models.DateField(blank=True, null=True)
+    note = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.loan} - {self.amount} on {self.created_at.date()}"

@@ -73,7 +73,7 @@
                         {% if loan.status == 'PENDING' %}
                             <a href="{% url 'update_loan' loan.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
                         {% elif loan.status == 'APPROVED' %}
-                            <a href="" class="btn btn-sm btn-outline-success"> Pay Now</a>
+                            <a href="{% url 'create_payloan' loan.id %}" class="btn btn-sm btn-outline-success"> Pay Now</a>
                         {% elif loan.status == 'PAID' %}
                             <span class="text-muted">✅🧾 Loan Clear</span>
                         {% endif %}

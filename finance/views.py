@@ -427,3 +427,26 @@ def mark_loan_as_approved(request, loan_id):
 
     return redirect('loan_list_pending')
 
+
+@staff_required
+@transaction.atomic
+def create_payloan_view(request, loan_id):
+    loan = get_object_or_404(Loan, pk=loan_id)
+
+    if request.method == 'POST':
+        form = PayLoanForm(request.POST)
+        if form.is_valid():
+            payloan = form.save(commit=False)
+            payloan.loan = loan
+            payloan.save()
+
+            loan.payment_amount += payloan.amount
+            if loan.payment_amount >= loan.amount:
+                loan.status = 'PAID'
+            loan.save()
+
+            return redirect('loan_list_pending')
+    else:
+        form = PayLoanForm()
+
+    return render(request, 'loan/create_payloan.html', {'form': form, 'loan': loan})  
