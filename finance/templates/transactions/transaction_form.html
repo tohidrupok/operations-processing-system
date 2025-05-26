@@ -1,7 +1,7 @@
 {% extends 'partials/base0.html' %}
 {% load static %}
-{% block content %}
 
+{% block content %}
 <div class="container py-5 d-flex justify-content-center">
     <div class="w-100" style="max-width: 600px;">
         <div class="card shadow-lg border-0 rounded-4">
@@ -13,8 +13,9 @@
             <div class="card-body bg-light">
                 <form method="post" class="needs-validation" novalidate>
                     {% csrf_token %}
+
                     {% for field in form %}
-                        <div class="mb-3">
+                        <div class="mb-3" id="div_id_{{ field.name }}">
                             <label for="{{ field.id_for_label }}" class="form-label">
                                 {{ field.label }}
                             </label>
@@ -27,6 +28,7 @@
                             {% endif %}
                         </div>
                     {% endfor %}
+
                     <div class="d-flex justify-content-between mt-4">
                         <a href="{% url 'transaction_list' %}" class="btn btn-outline-dark">⬅️ Back</a>
                         <button type="submit" class="btn btn-success fw-bold">💾 Save</button>
@@ -37,4 +39,29 @@
     </div>
 </div>
 
+<!-- ✅ JavaScript to toggle cheque-related fields -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const typeField = document.getElementById('id_type');
+    const chequeFields = ['bank', 'cheque_number', 'cheque_date', 'voucher_no', 'voucher_date'];
+
+    function toggleChequeFields() {
+        const isCheque = typeField.value === 'CHEQUE';
+
+        chequeFields.forEach(name => {
+            const div = document.getElementById(`div_id_${name}`);
+            if (div) {
+                div.style.display = isCheque ? 'block' : 'none';
+                if (!isCheque) {
+                    const input = div.querySelector('input, select');
+                    if (input) input.value = '';
+                }
+            }
+        });
+    }
+
+    toggleChequeFields(); // On page load
+    typeField.addEventListener('change', toggleChequeFields); // On change
+});
+</script>
 {% endblock %}

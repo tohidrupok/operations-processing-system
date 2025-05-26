@@ -17,11 +17,30 @@ class BankAccountForm(forms.ModelForm):
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
-        fields = ['project','amount','type','bank','voucher_no','voucher_date','company_account'] 
+        fields = ['project','amount','type','bank','cheque_number' ,'cheque_date', 'voucher_no','voucher_date','company_account'] 
+        widgets = {
+            'cheque_date': forms.DateInput(attrs={'type': 'date'}),
+            'voucher_date': forms.DateInput(attrs={'type': 'date'}),
+        }
         
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['project'].queryset = Project.objects.filter(status='RUNNING')
+        
+    def clean(self):
+        cleaned_data = super().clean()
+        client_payment_type = cleaned_data.get('type')
+    
+
+        if client_payment_type == 'CHEQUE':
+            if not cleaned_data.get('cheque_number'):
+                self.add_error('cheque_number', 'This field is required for cheque loans.')
+            if not cleaned_data.get('cheque_date'):
+                self.add_error('cheque_date', 'This field is required for cheque loans.')
+            if not cleaned_data.get('voucher_no'):
+                self.add_error('voucher_no', 'This field is required for cheque loans.')
+            if not cleaned_data.get('voucher_date'):
+                self.add_error('voucher_date', 'This field is required for cheque loans.')
+            if not cleaned_data.get('bank'):
+                self.add_error('bank', 'This field is required for cheque loans.')
+        return cleaned_data 
         
   
 class SupplierPaymentForm(forms.ModelForm):
