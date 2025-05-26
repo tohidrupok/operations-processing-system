@@ -443,17 +443,18 @@ def create_payloan_view(request, loan_id):
             payloan = form.save(commit=False)
             payloan.loan = loan
 
-            # Check for bank account and balance
+            # Check
             if payloan.bank_account:
                 if payloan.bank_account.balance < payloan.amount:
                     messages.error(request, "❌ Selected bank account does not have enough balance.")
                     return render(request, 'loan/create_payloan.html', {'form': form, 'loan': loan})
                 
-                # Deduct amount from bank account
+                
                 payloan.bank_account.balance -= payloan.amount
                 payloan.bank_account.save()
-
-            # Save the PayLoan instance
+            else:
+                return render(request, 'loan/create_payloan.html', {'form': form, 'loan': loan, 'payloans': payloans}) 
+            
             payloan.save()
 
             # Update loan payment

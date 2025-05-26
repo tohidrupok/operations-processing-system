@@ -83,6 +83,10 @@ class LoanForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         loan_type = cleaned_data.get('loan_giver_type')
+        bank_account = cleaned_data.get('bank_account')
+        
+        if not bank_account:
+           raise forms.ValidationError("Bank account is required when loan giver type is BANK.")
 
         if loan_type == 'CHEQUE':
             if not cleaned_data.get('cheque_number'):
