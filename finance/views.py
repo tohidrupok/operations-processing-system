@@ -1,12 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import user_passes_test
 from .models import *
+from core.models import Company
 from .forms import * 
 from django.contrib import messages
 from django.utils import timezone
 from django.db import transaction as db_transaction
 from datetime import date, timedelta
-from django.db.models import Sum
+from django.db.models import Sum, F, ExpressionWrapper, IntegerField, Value
+
 
 
 
@@ -468,4 +470,45 @@ def create_payloan_view(request, loan_id):
     else:
         form = PayLoanForm()
 
-    return render(request, 'loan/create_payloan.html', {'form': form, 'loan': loan, 'payloans': payloans})
+    return render(request, 'loan/create_payloan.html', {'form': form, 'loan': loan, 'payloans': payloans}) 
+
+
+from django.db.models.functions import Greatest
+
+@staff_required
+def client_due_report(request):
+    report = []
+
+    companies = Company.objects.all()
+
+    for company in companies:
+
+        valid_projects = company.projects.filter(
+            final_bill__isnull=False,
+            final_bill__gt=0,
+            status='RUNNING'
+        ).annotate(
+            due=ExpressionWrapper(
+                F('final_bill') - F('current_paid'),
+                output_field=IntegerField()
+            )
+        )
+        
+        # Aggregate total values
+        total_final_bill = valid_projects.aggregate(total=Sum('final_bill'))['total'] or 0
+        total_current_paid = valid_projects.aggregate(total=Sum('current_paid'))['total'] or 0
+        total_due = valid_projects.aggregate(total=Sum('due'))['total'] or 0
+
+        # Report e add koro, jodi kono project thake
+        if valid_projects.exists():
+            report.append({
+                'name': company.name,
+                'location': company.location,
+                'phone': company.phone,
+                'total_final_bill': total_final_bill,
+                'total_current_paid': total_current_paid,
+                'total_due': total_due
+            })
+
+    return render(request, 'reports/client_due_report.html', {'report': report})
+

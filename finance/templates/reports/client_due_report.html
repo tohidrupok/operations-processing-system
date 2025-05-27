@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Client Due Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 40px auto;
+        }
+        th, td {
+            padding: 12px 20px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        th {
+            background-color: #3a87ad;
+            color: white;
+        }
+        h2 {
+            text-align: center;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+<h2>Client Due Report</h2>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Phone</th>
+            <th>Total Final Bill</th>
+            <th>Total Paid</th>
+            <th>Total Due</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for client in report %}
+        <tr>
+            <td>{{ client.name }}</td>
+            <td>{{ client.location }}</td>
+            <td>{{ client.phone }}</td>
+            <td>{{ client.total_final_bill }}</td>
+            <td>{{ client.total_current_paid }}</td>
+            <td style="color: {% if client.total_due < 0 %}red{% elif client.total_due > 0 %}green{% else %}gray{% endif %};">
+                {{ client.total_due }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -38,6 +38,11 @@ urlpatterns = [
     path('loan/<int:loan_id>/mark-approved/', views.mark_loan_as_approved, name='mark_loan_as_approved'),
 
     path('payloan/create/<int:loan_id>/', views.create_payloan_view, name='create_payloan'),
+    
+    
+    
+    
+     path('client-due-report/', views.client_due_report, name='client_due_report'),
 
 ]
 
