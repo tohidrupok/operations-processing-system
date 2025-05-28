@@ -32,6 +32,13 @@
                                 {{ memo.project.name }}
                             </a>
                         </p>
+                        <p class="mb-1"><strong>Status:</strong> 
+                            {% if memo.is_payment_done %}
+                                <span class="text-success">Payment Done</span>
+                            {% else %}
+                                <span class="text-danger">Payment Not Cleared</span>
+                            {% endif %}
+                        </p>
                         <p class="mb-1"><strong>Amount:</strong> <span class="text-success">{{ memo.amount }} TK</span></p>
                         <p class="mb-1"><strong>Payment Balance:</strong> <span class="text-warning">{{ memo.payment_balance }} TK</span></p>
                         <p class="mb-1"><strong>Items:</strong></p>

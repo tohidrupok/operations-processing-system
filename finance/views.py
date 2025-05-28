@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import user_passes_test
 from .models import *
-from core.models import Company
+from core.models import Company, Supplier
 from .forms import * 
 from django.contrib import messages
 from django.utils import timezone
@@ -512,4 +512,31 @@ def client_due_report(request):
         
 
     return render(request, 'reports/client_due_report.html', {'report': report})
+
+
+
+
+def supplier_due_report(request):
+    report = []
+
+    suppliers = Supplier.objects.all()
+
+    for supplier in suppliers:
+        memos = supplier.memos.filter(is_payment_done=False)
+
+        if memos.exists():
+            total_amount = memos.aggregate(total=Sum('amount'))['total'] or 0
+            total_paid = memos.aggregate(total=Sum('payment_balance'))['total'] or 0
+            total_due = total_amount - total_paid
+
+            report.append({
+                'name': supplier.name,
+                'location': supplier.location,
+                'phone': supplier.phone,
+                'total_amount': total_amount,
+                'total_paid': total_paid,
+                'total_due': total_due
+            })
+
+    return render(request, 'reports/supplier_due_report.html', {'report': report}) 
 
