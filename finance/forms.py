@@ -46,12 +46,12 @@ class TransactionForm(forms.ModelForm):
 class SupplierPaymentForm(forms.ModelForm):
     class Meta:
         model = SupplierPayment
-        fields = ['memo', 'amount', 'type', 'bank_account', 'check_number', 'is_payment_done']
+        fields = ['memo', 'amount', 'type', 'bank_account', 'check_number']
         widgets = {
             'type': forms.Select(attrs={'class': 'form-control'}),
             'check_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'If not Cash'}),
             'amount': forms.NumberInput(attrs={'class': 'form-control'}),
-            'is_payment_done': forms.CheckboxInput(),
+            
         }
         
     def __init__(self, *args, **kwargs):
@@ -65,12 +65,12 @@ class SupplierPaymentForm(forms.ModelForm):
 class MenPowerPaymentForm(forms.ModelForm):
     class Meta:
         model = MenPowerPayment
-        fields = ['menpowermemo', 'amount', 'type', 'bank_account', 'check_number', 'is_payment_done']
+        fields = ['menpowermemo', 'amount', 'type', 'bank_account', 'check_number']
         widgets = {
             'type': forms.Select(attrs={'class': 'form-control'}),
             'check_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'If not Cash'}),
             'amount': forms.NumberInput(attrs={'class': 'form-control'}),
-            'is_payment_done': forms.CheckboxInput(),
+            
         }
         
     def __init__(self, *args, **kwargs):

@@ -53,9 +53,9 @@ class BankAccount(models.Model):
 class Transaction(models.Model):
     TYPE_CHOICES = [
         ('CASH', 'Cash'),
+        ('BANK', 'Bank Deposit'),
+        ('MOBILE', 'Bkash / Nogod / Rocket'),
         ('CHEQUE', 'Cheque'),
-        ('FTGS', 'FTGS'),
-        ('OTHER', 'Other'),
     ]
 
     STATUS_CHOICES = [
@@ -91,9 +91,9 @@ class Transaction(models.Model):
 class SupplierPayment(models.Model):
     PAYMENT_TYPE_CHOICES = [
         ('CASH', 'Cash'),
+        ('BANK', 'Bank Deposit'),
+        ('MOBILE', 'Bkash / Nogod / Rocket'),
         ('CHEQUE', 'Cheque'),
-        ('FTGS', 'FTGS'),
-        ('OTHER', 'Other'),
     ]
 
     memo = models.ForeignKey('core.Memo', on_delete=models.CASCADE)
@@ -111,9 +111,9 @@ class SupplierPayment(models.Model):
 class MenPowerPayment(models.Model):
     PAYMENT_TYPE_CHOICES = [
         ('CASH', 'Cash'),
+        ('BANK', 'Bank Deposit'),
+        ('MOBILE', 'Bkash / Nogod / Rocket'),
         ('CHEQUE', 'Cheque'),
-        ('FTGS', 'FTGS'),
-        ('OTHER', 'Other'),
     ]
 
     menpowermemo = models.ForeignKey('core.ManpowerMemo', on_delete=models.CASCADE)

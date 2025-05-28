@@ -193,8 +193,14 @@ def create_supplier_payment(request):
                 memo = payment.memo
                 memo.payment_balance += payment.amount 
                 
-                if payment.is_payment_done:
+                #auto ispaymentstatus change  
+                if  memo.payment_balance >= memo.amount:
                     memo.is_payment_done = True
+                     
+                # #manual ispaymentstatus change    
+                # if payment.is_payment_done:
+                #     memo.is_payment_done = True
+                    
                 memo.save()
 
                 # Save payment
@@ -236,8 +242,15 @@ def create_menpower_payment(request):
                 # Step 3: Update ManpowerMemo
                 memo = payment.menpowermemo
                 memo.payment_balance += payment.amount
-                if payment.is_payment_done:
+                
+                #auto ispaymentstatus change  
+                if  memo.payment_balance >= memo.amount:
                     memo.is_payment_done = True
+                    
+                # #manual ispaymentstatus change    
+                # if payment.is_payment_done:
+                #     memo.is_payment_done = True
+                    
                 memo.save()
 
                 # Step 4: Save payment

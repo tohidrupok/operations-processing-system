@@ -14,7 +14,6 @@
                 <th>Type</th>
                 <th>Bank Account</th>
                 <th>Check No.</th>
-                <th>Paid?</th>
                 <th>Date</th>
             </tr>
         </thead>
@@ -27,7 +26,6 @@
                     <td>{{ payment.get_type_display }}</td>
                     <td>{{ payment.bank_account }}</td>
                     <td>{{ payment.check_number }}</td>
-                    <td>{{ payment.is_payment_done|yesno:"✅,❌" }}</td>
                     <td>{{ payment.created_at|default:"-" }}</td>
                 </tr>
             {% empty %}
