@@ -480,9 +480,9 @@ def client_due_report(request):
     report = []
 
     companies = Company.objects.all()
-
+    
     for company in companies:
-
+        
         valid_projects = company.projects.filter(
             final_bill__isnull=False,
             final_bill__gt=0,
@@ -498,7 +498,7 @@ def client_due_report(request):
         total_final_bill = valid_projects.aggregate(total=Sum('final_bill'))['total'] or 0
         total_current_paid = valid_projects.aggregate(total=Sum('current_paid'))['total'] or 0
         total_due = valid_projects.aggregate(total=Sum('due'))['total'] or 0
-
+        
         # Report e add koro, jodi kono project thake
         if valid_projects.exists():
             report.append({
@@ -509,6 +509,7 @@ def client_due_report(request):
                 'total_current_paid': total_current_paid,
                 'total_due': total_due
             })
+        
 
     return render(request, 'reports/client_due_report.html', {'report': report})
 
