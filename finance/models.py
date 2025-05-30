@@ -201,7 +201,7 @@ class DevitTransactionHistory(models.Model):
         ('CHEQUE', 'Cheque'),
     ]
     
-    
+    project_or_loan_name = models.CharField(max_length=255, blank=True, null=True)
     bank_account = models.ForeignKey('BankAccount', on_delete=models.SET_NULL, null=True, blank=True)
     check_number = models.CharField(max_length=100, blank=True, null=True)
 

@@ -528,7 +528,7 @@ def client_due_report(request):
 
 
 
-
+@staff_required
 def supplier_due_report(request):
     report = []
 
@@ -553,3 +553,25 @@ def supplier_due_report(request):
 
     return render(request, 'reports/supplier_due_report.html', {'report': report}) 
 
+
+
+@staff_required
+def devit_transaction_report(request):
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    transactions = DevitTransactionHistory.objects.all().order_by('-created_at')
+
+
+    if start_date and end_date:
+        transactions = transactions.filter(created_at__date__range=[start_date, end_date])
+    else:
+        last_week = timezone.now() - timedelta(days=7)
+        transactions = transactions.filter(created_at__gte=last_week)
+
+    context = {
+        'transactions': transactions,
+        'start_date': start_date,
+        'end_date': end_date,
+    }
+    return render(request, 'reports/devit_transaction_report.html', context)

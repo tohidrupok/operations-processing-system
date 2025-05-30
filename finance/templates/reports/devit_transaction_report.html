@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>JR Accounting Software</title>
+    <link rel="icon" href="{% static 'assets/images/jr.png' %}" type="image/png" /> 
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+        }
+
+        .header, .footer {
+            text-align: center;
+            padding: 20px 40px;
+            background-color: #f2f2f2;
+            border-bottom: 2px solid #3a87ad;
+        }
+
+        .footer {
+            border-top: 2px solid #3a87ad;
+            border-bottom: none;
+            margin-top: 40px;
+        }
+
+        .company-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3a87ad;
+        }
+
+        .address, .contact {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        h2 {
+            text-align: center;
+            margin: 30px 0 10px;
+            color: #333;
+        }
+
+        table {
+            width: 90%;
+            margin: 0 auto 40px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #3a87ad;
+            color: white;
+        }
+
+        td {
+            color: #333;
+        }
+
+        .due-negative {
+            color: red;
+        }
+
+        .due-positive {
+            color: green;
+        }
+
+        .due-zero {
+            color: gray;
+        }
+
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            .header, .footer {
+                position: fixed;
+                width: 100%;
+                background-color: white;
+            }
+
+            .header {
+                top: 0;
+                border-bottom: 1px solid #aaa;
+            }
+
+            .footer {
+                bottom: 0;
+                border-top: 1px solid #aaa;
+            }
+
+            table {
+                margin-top: 180px;
+                margin-bottom: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="company-name">JR Corporation | Devit Transaction Report</div>
+    <div class="address">123, New Kakrail Road, Shantinagar, Dhaka - 1217</div>
+    <div class="contact">
+        📞 01711992851, 01936208414 &nbsp; | &nbsp; 📧 info@jrcorporationbd.com &nbsp; | &nbsp;
+        🌐 <a href="https://www.jrcorporationbd.com/" target="_blank">www.jrcorporationbd.com</a>
+    </div>
+</div>
+
+<h2>🧾 Devit Transaction Report</h2>
+
+<form method="get">
+    <label>Start Date:</label>
+    <input type="date" name="start_date" value="{{ start_date }}">
+    
+    <label>End Date:</label>
+    <input type="date" name="end_date" value="{{ end_date }}">
+    
+    <button type="submit">🔍 Filter</button>
+</form>
+
+<br>
+
+<table border="1" cellpadding="8">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Project / Loan</th>
+            <th>Transaction Type</th>
+            <th>Type</th>
+            <th>Amount</th> 
+            <th>Bank Account</th>
+            <th>Check Number</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        {% for t in transactions %}
+        <tr>
+            <td>{{ t.created_at.date }}</td>
+            <td>{{ t.project_or_loan_name }}</td>
+            <td>{{ t.content_type.model|title }}</td>
+            <td>{{ t.payment_type }}</td>
+            <td>{{ t.amount }} TK</td>
+            <td>{{ t.bank_account }}</td>
+            <td>{{ t.check_number }}</td>
+            
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No transactions found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="footer">
+    <div class="address">JR Corporation, 123, New Kakrail Road, Shantinagar, Dhaka - 1217</div>
+    <div class="contact">
+        Contact: 01711992851, 01936208414 &nbsp; | &nbsp; Email: info@jrcorporationbd.com
+    </div>
+</div>
+
+</body>
+</html>
+ 
+
