@@ -185,4 +185,36 @@ class PayLoan(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.loan} - {self.amount} on {self.created_at.date()}"
+        return f"{self.loan} - {self.amount} on {self.created_at.date()}" 
+    
+    
+
+#auto transction make by singnals
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey 
+    
+class DevitTransactionHistory(models.Model):
+    PAYMENT_TYPE_CHOICES = [
+        ('CASH', 'Cash'),
+        ('BANK', 'Bank Deposit'),
+        ('MOBILE', 'Bkash / Nogod / Rocket'),
+        ('CHEQUE', 'Cheque'),
+    ]
+    
+    
+    bank_account = models.ForeignKey('BankAccount', on_delete=models.SET_NULL, null=True, blank=True)
+    check_number = models.CharField(max_length=100, blank=True, null=True)
+
+    amount = models.PositiveIntegerField()
+    payment_type = models.CharField(max_length=20, choices=PAYMENT_TYPE_CHOICES)
+    note = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    # Generic relation to any payment model
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    related_payment = GenericForeignKey('content_type', 'object_id')
+
+    def __str__(self):
+        return f"{self.payment_type} - {self.amount} on {self.created_at.date()}" 
+    
