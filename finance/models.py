@@ -201,6 +201,9 @@ class DevitTransactionHistory(models.Model):
         ('CHEQUE', 'Cheque'),
     ]
     
+    project_or_loan_name = models.CharField(max_length=255, blank=True, null=True)
+    bank_account = models.ForeignKey('BankAccount', on_delete=models.SET_NULL, null=True, blank=True)
+    check_number = models.CharField(max_length=100, blank=True, null=True)
 
     amount = models.PositiveIntegerField()
     payment_type = models.CharField(max_length=20, choices=PAYMENT_TYPE_CHOICES)
@@ -215,3 +218,6 @@ class DevitTransactionHistory(models.Model):
     def __str__(self):
         return f"{self.payment_type} - {self.amount} on {self.created_at.date()}" 
     
+    
+
+
