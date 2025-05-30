@@ -575,3 +575,34 @@ def devit_transaction_report(request):
         'end_date': end_date,
     }
     return render(request, 'reports/devit_transaction_report.html', context)
+
+
+@staff_required
+def credit_transaction_report(request):
+
+    today = date.today()
+    default_start = today - timedelta(days=7)
+    default_end = today
+
+    start_date = request.GET.get('start_date', default_start)
+    end_date = request.GET.get('end_date', default_end)
+
+    # Convert to date objects if they're strings
+    if isinstance(start_date, str):
+        start_date = date.fromisoformat(start_date)
+    if isinstance(end_date, str):
+        end_date = date.fromisoformat(end_date)
+
+    # Filter transactions
+    transactions = Transaction.objects.filter(
+        status = 'APPROVED',
+        created_at__date__range=[start_date, end_date]
+    ).select_related('project', 'company_account', 'bank')
+
+    context = {
+        'transactions': transactions,
+        'start_date': start_date,
+        'end_date': end_date,
+        'total_amount': sum(t.amount for t in transactions)
+    }
+    return render(request, 'reports/credit_transaction_report.html', context)

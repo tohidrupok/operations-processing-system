@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>JR Accounting Software | Debit Transaction Report</title>
+    <link rel="icon" href="{% static 'assets/images/jr.png' %}" type="image/png" /> 
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .company-name {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .address, .contact {
+            font-size: 14px;
+        }
+        h2, h3 {
+            text-align: center;
+        }
+        form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        form label {
+            margin: 0 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid #888;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        p {
+            text-align: center;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="company-name">JR Corporation | Credit Transaction Report</div>
+        <div class="address">123, New Kakrail Road, Shantinagar, Dhaka - 1217</div>
+        <div class="contact">
+            📞 01711992851, 01936208414 &nbsp; | &nbsp;
+            📧 info@jrcorporationbd.com &nbsp; | &nbsp;
+            🌐 <a href="https://www.jrcorporationbd.com/" target="_blank">www.jrcorporationbd.com</a>
+        </div>
+    </div>
+
+  <hr>
+    <form method="get">
+        <label>Start Date:</label>
+        <input type="date" name="start_date" value="{{ start_date }}">
+        <label>End Date:</label>
+        <input type="date" name="end_date" value="{{ end_date }}">
+        <button type="submit">Filter</button>
+    </form>
+
+    <p><strong>Total Amount:</strong> {{ total_amount }} TK</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>Amount</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Voucher Date</th>
+                <th>Receive Date</th>
+                <th>Bank</th>
+                <th>Cheque No</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.project.name }}</td>
+                <td>{{ transaction.amount }} TK</td>
+                <td>{{ transaction.get_type_display }}</td>
+                <td>{{ transaction.get_status_display }}</td>
+                <td>{{ transaction.voucher_date }}</td>
+                <td>{{ transaction.receive_date }}</td>
+                <td>{{ transaction.bank.name }}</td>
+                <td>{{ transaction.cheque_number }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">No transactions in this period.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

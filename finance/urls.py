@@ -42,7 +42,8 @@ urlpatterns = [
 #repot    
     path('client-due-report/', views.client_due_report, name='client_due_report'),
     path('supplier-due-report/', views.supplier_due_report, name='supplier_due_report'),
-    path('transaction-report/', views.devit_transaction_report, name='devit_transaction_report'),
+    path('transaction-report/devit/', views.devit_transaction_report, name='devit_transaction_report'),
+    path('transaction-report/credit/', views.credit_transaction_report, name='credit_transaction_report'),
 
 ]
 
