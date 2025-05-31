@@ -272,14 +272,18 @@ def menpower_payment_list(request):
 
 @staff_required
 def approved_income_transaction_total(request):
-    
-    end_date = request.GET.get('end_date', date.today())
-    start_date = request.GET.get('start_date', date.today() - timedelta(days=30))
+    start_date_str = request.GET.get('start_date')
+    end_date_str = request.GET.get('end_date')
 
-    if isinstance(start_date, str):
-        start_date = date.fromisoformat(start_date)
-    if isinstance(end_date, str):
-        end_date = date.fromisoformat(end_date)
+    try:
+        start_date = date.fromisoformat(start_date_str) if start_date_str else date.today() - timedelta(days=30)
+    except ValueError:
+        start_date = date.today() - timedelta(days=30)
+
+    try:
+        end_date = date.fromisoformat(end_date_str) if end_date_str else date.today()
+    except ValueError:
+        end_date = date.today()
 
     total_amount = Transaction.objects.filter(
         status='APPROVED',
@@ -296,19 +300,26 @@ def approved_income_transaction_total(request):
 
 @staff_required
 def combined_payment_total(request):
-    
-    end_date = request.GET.get('end_date', date.today())
-    start_date = request.GET.get('start_date', date.today() - timedelta(days=30))
+    start_date_str = request.GET.get('start_date')
+    end_date_str = request.GET.get('end_date')
 
-    if isinstance(start_date, str):
-        start_date = date.fromisoformat(start_date)
-    if isinstance(end_date, str):
-        end_date = date.fromisoformat(end_date)
+    try:
+        start_date = date.fromisoformat(start_date_str) if start_date_str else date.today() - timedelta(days=30)
+    except ValueError:
+        start_date = date.today() - timedelta(days=30)
 
+    try:
+        end_date = date.fromisoformat(end_date_str) if end_date_str else date.today()
+    except ValueError:
+        end_date = date.today()
 
-    supplier_total = SupplierPayment.objects.filter(created_at__date__range=(start_date, end_date)).aggregate(total=Sum('amount'))['total'] or 0
+    supplier_total = SupplierPayment.objects.filter(
+        created_at__date__range=(start_date, end_date)
+    ).aggregate(total=Sum('amount'))['total'] or 0
 
-    menpower_total = MenPowerPayment.objects.filter( created_at__date__range=(start_date, end_date)).aggregate(total=Sum('amount'))['total'] or 0
+    menpower_total = MenPowerPayment.objects.filter(
+        created_at__date__range=(start_date, end_date)
+    ).aggregate(total=Sum('amount'))['total'] or 0
 
     grand_total = supplier_total + menpower_total
 
@@ -320,7 +331,7 @@ def combined_payment_total(request):
         'grand_total': grand_total
     }
 
-    return render(request, 'transactions/payment_summary.html', context) 
+    return render(request, 'transactions/payment_summary.html', context)
 
 
 
