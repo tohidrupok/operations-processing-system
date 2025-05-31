@@ -590,23 +590,25 @@ def devit_transaction_report(request):
 
 @staff_required
 def credit_transaction_report(request):
-
     today = date.today()
     default_start = today - timedelta(days=7)
     default_end = today
 
-    start_date = request.GET.get('start_date', default_start)
-    end_date = request.GET.get('end_date', default_end)
+    start_date_str = request.GET.get('start_date')
+    end_date_str = request.GET.get('end_date')
 
-    # Convert to date objects if they're strings
-    if isinstance(start_date, str):
-        start_date = date.fromisoformat(start_date)
-    if isinstance(end_date, str):
-        end_date = date.fromisoformat(end_date)
+    try:
+        start_date = date.fromisoformat(start_date_str) if start_date_str else default_start
+    except ValueError:
+        start_date = default_start
 
-    # Filter transactions
+    try:
+        end_date = date.fromisoformat(end_date_str) if end_date_str else default_end
+    except ValueError:
+        end_date = default_end
+
     transactions = Transaction.objects.filter(
-        status = 'APPROVED',
+        status='APPROVED',
         created_at__date__range=[start_date, end_date]
     ).select_related('project', 'company_account', 'bank')
 

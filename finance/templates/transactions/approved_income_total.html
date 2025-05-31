@@ -5,7 +5,7 @@
 <div class="container mt-5">
     <div class="card shadow-lg border-0 rounded-4">
         <div class="card-body">
-            <h2 class="card-title text-center mb-4 text-primary fw-bold">Transaction Summary</h2>
+            <h2 class="card-title text-center mb-4 text-primary fw-bold">Income Transaction Summary</h2>
 
             <form method="get" class="row g-3 justify-content-center">
                 <div class="col-md-4">
@@ -26,7 +26,7 @@
             <div class="text-center">
                 <h4 class="text-success fw-bold">Total Approved Transactions</h4>
                 <p class="fs-4 mb-0">{{ total_amount|floatformat:2 }} <span class="text-muted">TK</span></p>
-                <small class="text-muted">From {{ start_date }} to {{ end_date }}</small>
+                <p class="text-danger">From {{ start_date }} to {{ end_date }}</p>
             </div>
         </div>
     </div>
