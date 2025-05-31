@@ -393,6 +393,7 @@ def memo_delete(request, pk):
         return redirect('memo_list')
     return render(request, 'memo/memo_confirm_delete.html', {'memo': memo})
 
+@staff_required
 def memo_detail(request, pk):
     memo = get_object_or_404(Memo, pk=pk)
     return render(request, 'memo/memo_detail.html', {'memo': memo})

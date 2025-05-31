@@ -75,138 +75,52 @@
 						<div class="menu-title">Project</div>
 					</a>
 					<ul>
-						<li> <a href="{% url 'project_list' %}"><i class="bx bx-right-arrow-alt"></i>Running Project List</a>
-						</li>
-						<li> <a href="{% url 'all_project_list' %}"><i class="bx bx-right-arrow-alt"></i>All Project List</a>
-						</li>
+						<li> <a href="{% url 'project_list' %}"><i class="bx bx-right-arrow-alt"></i>Running Project List</a></li>
+						<li> <a href="{% url 'all_project_list' %}"><i class="bx bx-right-arrow-alt"></i>All Project Add</a></li></li>
+						<li> <a href="{% url 'memo_list' %}"><i class="bx bx-right-arrow-alt"></i>Supplier Memo List</a></li>
+						<li> <a href="{% url 'manpowermemo_list' %}"><i class="bx bx-right-arrow-alt"></i>Peter supplier List</a></li>
+					</ul>
+				</li>
+
+				<li class="menu-label">Memory</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon"><i class='bx bx-edit'></i>
+						</div>
+						<div class="menu-title">Add Profile </div>
+					</a>
+					<ul>
 						<li> <a href="{% url 'project_create' %}"><i class="bx bx-right-arrow-alt"></i>Add New Project</a>
-						</li>
-						<li> <a href="{% url 'memo_list' %}"><i class="bx bx-right-arrow-alt"></i>Memo List</a>
-						</li>
-						<li> <a href="{% url 'memo_create' %}"><i class="bx bx-right-arrow-alt"></i>Add New Memo</a>
-						</li>
-						<li> <a href="{% url 'manpowermemo_list' %}"><i class="bx bx-right-arrow-alt"></i>Hiring Memo</a>
-						</li>
-						<li> <a href="{% url 'manpowermemo_create' %}"><i class="bx bx-right-arrow-alt"></i>Add New Hiring Memo</a>
-						</li>
+						<li> <a href="{% url 'category_list' %}"><i class="bx bx-right-arrow-alt"></i>Category Add</a></li>
+						<li> <a href="{% url 'item_list' %}"><i class="bx bx-right-arrow-alt"></i>Item Add</a></li>
+						<li> <a href="{% url 'company_list' %}"><i class="bx bx-right-arrow-alt"></i>Client Add</a></li>
+						<li> <a href="{% url 'supplier_list' %}"><i class="bx bx-right-arrow-alt"></i>Supplier Add</a></li>
+						<li> <a href="{% url 'menpower_list' %}"><i class="bx bx-right-arrow-alt"></i>Peter Supplier Add</a></li>
+						<li> <a href="{% url 'bank_list' %}"><i class="bx bx-right-arrow-alt"></i>Bank Add</a></li>
 					</ul>
-				</li>
-				<li class="menu-label">Save Memory</li>
-				
-				<li>
-					<a href="javascript:;" class="has-arrow">
-						<div class="parent-icon"><i class='bx bx-cart'></i>
-						</div>
-						<div class="menu-title"> Client </div>
-					</a>
-					<ul>
-						<li> <a href="{% url 'company_list' %}" ><i class="bx bx-right-arrow-alt"></i>Client List</a>
-						</li>
-						
-						<li> <a href="{% url 'company_create' %}"><i class="bx bx-right-arrow-alt"></i>Add New client</a>
-						</li>
-						{% comment %} <li> <a href="ecommerce-products-details.html"><i class="bx bx-right-arrow-alt"></i>Product Details</a>
-						</li>
-						<li> <a href="ecommerce-orders.html"><i class="bx bx-right-arrow-alt"></i>Orders</a>
-						</li> {% endcomment %}
-					</ul>    
-				</li>
-				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon"><i class='bx bx-bookmark-heart'></i>
-						</div>
-						<div class="menu-title">Supplier</div>
-					</a>
-					<ul>
-						<li> <a href="{% url 'supplier_list' %}"><i class="bx bx-right-arrow-alt"></i>Supplier List</a>
-						</li>
-						<li> <a href="{% url 'supplier_create' %}"><i class="bx bx-right-arrow-alt"></i>Add New Supplier</a>
-						</li>
-						{% comment %} <li> <a href="component-badges.html"><i class="bx bx-right-arrow-alt"></i>Badges</a>
-						</li>
-						<li> <a href="component-buttons.html"><i class="bx bx-right-arrow-alt"></i>Buttons</a> {% endcomment %}
-						
-					</ul>
-				</li>
-				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon"><i class="bx bx-repeat"></i>
-						</div>
-						<div class="menu-title">MenPower</div>
-					</a>
-					<ul>
-						<li> <a href="{% url 'menpower_list' %}"><i class="bx bx-right-arrow-alt"></i>MenPower List</a>
-						</li>
-						<li> <a href="{% url 'menpower_create' %}"><i class="bx bx-right-arrow-alt"></i>Add New MenPower</a>
-						</li>
-						{% comment %} <li> <a href="content-text-utilities.html"><i class="bx bx-right-arrow-alt"></i>Text Utilities</a>
-						</li> {% endcomment %}
-					</ul>
-				</li>
-				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon"> <i class="bx bx-donate-blood"></i>
-						</div>
-						<div class="menu-title">Items</div>
-					</a>
-					<ul>
-						<li> <a href="{% url 'item_list' %}"><i class="bx bx-right-arrow-alt"></i>Items List</a>
-						</li>
-						<li> <a href="{% url 'item_create' %}"><i class="bx bx-right-arrow-alt"></i>Add New Items</a>
-						</li>
-						<li> <a href="{% url 'category_list' %}"><i class="bx bx-right-arrow-alt"></i>Category List</a>
-						</li>
-						<li> <a href="{% url 'category_create' %}"><i class="bx bx-right-arrow-alt"></i>Add New Category</a>
-						</li>
-					</ul>
-				</li> 
-				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon"><i class="bx bx-grid-alt"></i>
-						</div>
-						<div class="menu-title">Bank</div>
-					</a>
-					<ul>
-						<li> <a href="{% url 'bank_list' %}"><i class="bx bx-right-arrow-alt"></i>Bank List</a>
-						</li>
-						<li> <a href="{% url 'bank_account_list' %}"><i class="bx bx-right-arrow-alt"></i>Bank Account List</a>
-						</li>
-						<li> <a href="{% url 'transfer_view' %}"><i class="bx bx-right-arrow-alt"></i>Transfer Balance </a></li>
-					</ul>
-				</li> 
+				</li>      
 
 				<li class="menu-label">Financial Part</li>
 				<li>
 					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon"><i class='bx bx-wallet'></i>
+						<div class="parent-icon"><i class='bx bx-credit-card'></i>
 						</div>
 						<div class="menu-title">Transaction </div>
 					</a>
-					<ul>
-						
+					<ul>					
 						<li> <a href="{% url 'transaction_list' %}"><i class="bx bx-right-arrow-alt"></i>Received from client</a></li>
 						<li> <a href="{% url 'supplier_payment_list' %}"><i class="bx bx-right-arrow-alt"></i>Paid to supplier</a></li> 
 						<li> <a href="{% url 'menpower_payment_list' %}"><i class="bx bx-right-arrow-alt"></i>Paid to worker</a></li>
+						<li> <a href="{% url 'bank_account_list' %}"><i class="bx bx-right-arrow-alt"></i>Bank Account List</a></li>
+						<li> <a href="{% url 'transfer_view' %}"><i class="bx bx-right-arrow-alt"></i>Transfer Balance </a></li>
+						<li> <a href="{% url 'create_loan' %}"><i class="bx bx-right-arrow-alt"></i>Create a New Loan </a></li>
+						<li> <a href="{% url 'loan_list_pending' %}"><i class="bx bx-right-arrow-alt"></i>list of Pending Loan</a></li>
 					</ul>
 				</li> 
 
-				<li class="menu-label">Loan and Report</li>
 				<li>
 					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon"><i class='bx bx-wallet'></i>
-						</div>
-						<div class="menu-title">Loan </div>
-					</a>
-					<ul>
-						<li> <a href="{% url 'create_loan' %}"><i class="bx bx-right-arrow-alt"></i>Create a New Loan </a></li>
-						<li> <a href="{% url 'loan_list_pending' %}"><i class="bx bx-right-arrow-alt"></i>list of Pending Loan</a></li>
-
-					</ul>
-				</li>   
-
-				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon"><i class='bx bx-wallet'></i>
+						<div class="parent-icon"><i class='bx bx-line-chart'></i>
 						</div>
 						<div class="menu-title">Reports </div>
 					</a>
@@ -215,157 +129,9 @@
 						<li> <a href="{% url 'supplier_due_report' %}" target="_blank" ><i class="bx bx-right-arrow-alt"></i>Supplier Report</a></li> 
 						<li> <a href="{% url 'credit_transaction_report' %}" target="_blank" ><i class="bx bx-right-arrow-alt"></i>Credit Transaction Report</a></li> 
 						<li> <a href="{% url 'devit_transaction_report' %}" target="_blank" ><i class="bx bx-right-arrow-alt"></i>Devit Transaction Report</a></li> 
-
-
 					</ul>
 				</li>  
 
-
-				{% comment %} <li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon"><i class="bx bx-grid-alt"></i>
-						</div>
-						<div class="menu-title">Tables</div>
-					</a>
-					<ul>
-						<li> <a href="table-basic-table.html"><i class="bx bx-right-arrow-alt"></i>Basic Table</a>
-						</li>
-						<li> <a href="table-datatable.html"><i class="bx bx-right-arrow-alt"></i>Data Table</a>
-						</li>
-					</ul>
-				</li>
-				<li class="menu-label">Pages</li>
-				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon"><i class="bx bx-lock"></i>
-						</div>
-						<div class="menu-title">Authentication</div>
-					</a>
-					<ul>
-						<li> <a href="authentication-signin.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Sign In</a>
-						</li>
-						<li> <a href="authentication-signup.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Sign Up</a>
-						</li>
-						<li> <a href="authentication-signin-with-header-footer.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Sign In with Header & Footer</a>
-						</li>
-						<li> <a href="authentication-signup-with-header-footer.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Sign Up with Header & Footer</a>
-						</li>
-						<li> <a href="authentication-forgot-password.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Forgot Password</a>
-						</li>
-						<li> <a href="authentication-reset-password.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Reset Password</a>
-						</li>
-						<li> <a href="authentication-lock-screen.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Lock Screen</a>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a href="user-profile.html">
-						<div class="parent-icon"><i class="bx bx-user-circle"></i>
-						</div>
-						<div class="menu-title">User Profile</div>
-					</a>
-				</li>
-				<li>
-					<a href="timeline.html">
-						<div class="parent-icon"> <i class="bx bx-video-recording"></i>
-						</div>
-						<div class="menu-title">Timeline</div>
-					</a>
-				</li>
-				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon"><i class="bx bx-error"></i>
-						</div>
-						<div class="menu-title">Errors</div>
-					</a>
-					<ul>
-						<li> <a href="errors-404-error.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>404 Error</a>
-						</li>
-						<li> <a href="errors-500-error.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>500 Error</a>
-						</li>
-						<li> <a href="errors-coming-soon.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Coming Soon</a>
-						</li>
-						<li> <a href="error-blank-page.html" target="_blank"><i class="bx bx-right-arrow-alt"></i>Blank Page</a>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a href="faq.html">
-						<div class="parent-icon"><i class="bx bx-help-circle"></i>
-						</div>
-						<div class="menu-title">FAQ</div>
-					</a>
-				</li>
-				<li>
-					<a href="pricing-table.html">
-						<div class="parent-icon"><i class="bx bx-diamond"></i>
-						</div>
-						<div class="menu-title">Pricing</div>
-					</a>
-				</li>
-				<li class="menu-label">Charts & Maps</li>
-				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon"><i class="bx bx-line-chart"></i>
-						</div>
-						<div class="menu-title">Charts</div>
-					</a>
-					<ul>
-						<li> <a href="charts-apex-chart.html"><i class="bx bx-right-arrow-alt"></i>Apex</a>
-						</li>
-						<li> <a href="charts-chartjs.html"><i class="bx bx-right-arrow-alt"></i>Chartjs</a>
-						</li>
-						<li> <a href="charts-highcharts.html"><i class="bx bx-right-arrow-alt"></i>Highcharts</a>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon"><i class="bx bx-map-alt"></i>
-						</div>
-						<div class="menu-title">Maps</div>
-					</a>
-					<ul>
-						<li> <a href="map-google-maps.html"><i class="bx bx-right-arrow-alt"></i>Google Maps</a>
-						</li>
-						<li> <a href="map-vector-maps.html"><i class="bx bx-right-arrow-alt"></i>Vector Maps</a>
-						</li>
-					</ul>
-				</li>
-				<li class="menu-label">Others</li>
-				<li>
-					<a class="has-arrow" href="javascript:;">
-						<div class="parent-icon"><i class="bx bx-menu"></i>
-						</div>
-						<div class="menu-title">Menu Levels</div>
-					</a>
-					<ul>
-						<li> <a class="has-arrow" href="javascript:;"><i class="bx bx-right-arrow-alt"></i>Level One</a>
-							<ul>
-								<li> <a class="has-arrow" href="javascript:;"><i class="bx bx-right-arrow-alt"></i>Level Two</a>
-									<ul>
-										<li> <a href="javascript:;"><i class="bx bx-right-arrow-alt"></i>Level Three</a>
-										</li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a href="https://codervent.com/rukada/documentation/index.html" target="_blank">
-						<div class="parent-icon"><i class="bx bx-folder"></i>
-						</div>
-						<div class="menu-title">Documentation</div>
-					</a>
-				</li>
-				<li>
-					<a href="https://themeforest.net/user/codervent" target="_blank">
-						<div class="parent-icon"><i class="bx bx-support"></i>
-						</div>
-						<div class="menu-title">Support</div>
-					</a>
-				</li> {% endcomment %}
 			</ul>
 			<!--end navigation-->
 		</div>

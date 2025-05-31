@@ -150,5 +150,5 @@ EMAIL_PORT = 465  # cPanel SMTP SSL port 465
 EMAIL_USE_TLS = False  # TLS OFF (because we're using SSL)
 EMAIL_USE_SSL = True  # SSL ON (since port 465 uses SSL)
 EMAIL_HOST_USER = 'tohidrupok@pkgitbd.com'
-EMAIL_HOST_PASSWORD = 'dd##24'  # Use actual password
+EMAIL_HOST_PASSWORD = '***'  # Use actual password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
