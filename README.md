@@ -1,6 +1,6 @@
 # 📘 Operations Management System
 
-A Django-based ERP-style system for managing **Companies, Suppliers, Workers, Projects, Memos, Payments, Banks, Loans**, and more — all in one place.
+A Django-based ERP-style system for managing **Companies, Suppliers, Workers, Projects, Memos, Payments, Banks, Loans**, and more — all in one place. This software is a Django-based Operations Management System designed for construction or project-based companies. It allows authorized staff to easily manage Companies, Suppliers, Workers (MenPower), Categories, Items, Projects, Memos, Payments, Bank Transactions, and Reports — all in one place. The system helps track project costs, supplier dues, worker payments, bank balances, loans, and overall profitability. It includes user authentication, admin permission control, and clear dashboards for smooth daily operations. With this system, businesses can streamline paperwork, reduce manual errors, and maintain a clear financial record.
 
 ---
 
