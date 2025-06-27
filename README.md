@@ -39,4 +39,4 @@ python manage.py migrate
 # Run the server
 python manage.py runserver
 
-If you need, call me: 01622151055(whatsapp)
+If you encounter any issues or need this software, feel free to contact me on WhatsApp at +8801622151055.
